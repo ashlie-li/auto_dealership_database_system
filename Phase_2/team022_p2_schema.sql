@@ -127,13 +127,13 @@ CargoCapacity decimal(10,2) NOT NULL,
 CargoCoverType varchar(25) DEFAULT NULL,
 NumberOfRearAxies int(16) NOT NULL,
 PRIMARY KEY (Vin)
-)
+);
  
 CREATE TABLE VanMiniVans (
 Vin varchar(17)  NOT NULL,
 HasDriverSideBackDoor boolean NOT NULL,
 PRIMARY KEY (Vin)
-)
+);
  
 CREATE TABLE SUVs (
 Vin varchar(17)  NOT NULL,
@@ -212,7 +212,7 @@ ALTER TABLE Vehicles
 
 
 ALTER TABLE VehicleColors
-	ADD CONSTRAINT fk_ vehiclecolors_vehicles FOREIGN KEY (Vin) REFERENCES Vehicles(Vin);
+	ADD CONSTRAINT fk_ vehiclecolors_vehicles FOREIGN KEY (Vin) REFERENCES Vehicles(Vin),
 	ADD CONSTRAINT fk_ vehiclecolors_colorss FOREIGN KEY (Colors) REFERENCES Colors(Color);
 
 ALTER TABLE Cars
@@ -255,3 +255,4 @@ ALTER TABLE RepairEvents
 
 ALTER TABLE Parts
 	ADD CONSTRAINT fk_parts_repairs FOREIGN KEY (Vin, StartDate) REFERENCES RepairEvents (Vin, StartDate) ON DELETE CASCADE ON UPDATE CASCADE;
+
