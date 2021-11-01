@@ -253,6 +253,5 @@ ALTER TABLE RepairEvents
 	ADD CONSTRAINT fk_repairs_servicewriters FOREIGN KEY (Username) REFERENCES ServiceWriters (Username),
 	ADD CONSTRAINT fk_repairs_customers FOEREIGN KEY (CustomerID) REFERENCES Customers (CustomerID);
 
-
 ALTER TABLE Parts
 	ADD CONSTRAINT fk_parts_repairs FOREIGN KEY (Vin, StartDate) REFERENCES RepairEvents (Vin, StartDate) ON DELETE CASCADE ON UPDATE CASCADE;
