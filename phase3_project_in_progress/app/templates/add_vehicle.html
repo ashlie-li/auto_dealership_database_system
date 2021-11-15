@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Vehicle</title>
+</head>
+<body>
+    <form class="add_vehicle" method="post" action="">
+        <label for="Vin">Enter Vin</label>
+        <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
+        <p></p>
+        <label for="Manu">Enter Manufacturer</label>
+        <input type="text" placeholder="Manufacturer" name="Manu" id="Manu" required>
+        <p></p>
+        <label for="ModelName">Enter Model Name</label>
+        <input type="text" placeholder="Model Name" name="ModelName" id="ModelName" required>
+        <p></p>
+        <label for="ModelYear">Enter Model Year</label>
+        <input type="text" placeholder="Model Year" name="ModelYear" id="ModelYear" required>
+        <p></p>
+        <label for="InvoicePrice">Enter Invoice Price</label>
+        <input type="text" placeholder="Invoice Price" name="InvoicePrice" id="InvoicePrice" required>
+        <p></p>
+        <label for="ClerkUsername">Enter ClerkUsername</label>
+        <input type="text" placeholder="ClerkUsername" name="ClerkUsername" id="ClerkUsername" required>
+        <p></p>
+        <label for="Description">Description</label>
+        <input type="text" name="Description" id="Description" style="width:500px;">
+        <p></p>
+        <label for="color">Choose Colors</label>
+        <select name="color" id="color" multiple required>
+            <option disabled selected value> -- select an option -- </option>
+            {% for var in dropColor %}
+            <option value="{{ var }}">{{ var }}</option>
+            {% endfor %}
+        </select>
+        <p></p>
+        <button type="submit">Add Vehicle</button>
+    </form>
+    <p></p>
+    <div class="msg">{{ msg }}</div>
+
+
+
+</body>
+</html>
