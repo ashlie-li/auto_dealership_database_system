@@ -12,7 +12,8 @@ app.config['SECRET_KEY'] = 'my_keys'
 
 
 from app import report_part_stats, report_average_time, report_sales_by_color, report_monthly_sales, \
-                report_repair_by_manu, report_customer_income, login, search, add_vehicle
+                report_repair_by_manu, report_customer_income, login, search, add_vehicle, \
+                report_sales_by_type, report_sales_by_manufacturer, report_below_cost_sales
 
 if __name__ == '__main__':
     app.run(debug = True, port = 5000)

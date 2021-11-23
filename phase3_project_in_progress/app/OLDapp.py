@@ -15,7 +15,7 @@ mysql = MySQL(app)
 
 @app.route('/', methods = ['GET', 'POST'])
 def index():
-    
+
     def readSQL(query):
         cur = mysql.connection.cursor()
         cur.execute(query)
@@ -24,14 +24,14 @@ def index():
         cur.close()
         return res
 
-    query = '''SELECT VendorName,  SUM(QuantityUsed * Price) AS TotalCost, 
+    query = '''SELECT VendorName,  SUM(QuantityUsed * Price) AS TotalCost,
             SUM(QuantityUsed) AS NumberOfPart
             FROM Parts GROUP BY VendorName
-            ORDER BY TotalCost DESC;'''    
-    
+            ORDER BY TotalCost DESC;'''
+
     raw= readSQL(query)
     raw = list(raw)
-    
+
     res = []
     for row in raw:
         tmp = []
@@ -39,10 +39,10 @@ def index():
         tmp.append('$ ' + str(row[1]))
         tmp.append(row[2])
         res.append(tmp)
-        
+
     col = ('Vendor Name', 'Total Cost', 'Number of Part')
 
-    
+
     return render_template('report.html', col = col, res = res)
 
 if __name__ == '__main__':

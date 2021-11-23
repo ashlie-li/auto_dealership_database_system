@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales By Manufacturer Report</title>
+</head>
+<body>
+    <h1>Sales By Manufacturer Report</h1>
+
+
+    <div class="container">
+        <table class ="average time" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+
+
+
+
+</body>
+</html>
