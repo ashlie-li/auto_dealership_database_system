@@ -31,18 +31,209 @@
         <p></p>
         <label for="color">Choose Colors</label>
         <select name="color" id="color" multiple required>
-            <option disabled selected value> -- select an option -- </option>
+            <option disabled selected value> -- select a color option -- </option>
             {% for var in dropColor %}
             <option value="{{ var }}">{{ var }}</option>
             {% endfor %}
         </select>
-        <p></p>
-        <button type="submit">Add Vehicle</button>
     </form>
     <p></p>
+    <div class="msg">{{ msg1 }}</div>
+
+
+    <label for="vehicleType">Choose Types</label>
+    <select name="vehicleType" id="vehicleType" multiple required>
+        <option disabled selected value> -- select a vehicle type -- </option>
+        <option value="Car">Car</option>
+        <option value="SUV">SUV</option>
+        <option value="VanMinVan">VanMinVan</option>
+        <option value="Convertible">Convertible</option>
+         <option value="Truck">Truck</option>
+    </select>
+    <input type="submit" id="submit_type" value="Confirm Type" onclick="myType()"/>
+    <br><br>
+
+    <div>
+        <form class="car" method="post" action="" style="display: none;">
+            <label for="Vin">Enter Vin Number</label>
+            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
+            <br><br>
+            <label for="NumOfDoors">Enter NumOfDoors</label>
+            <input type="number" placeholder="NumOfDoors" name="NumOfDoors" id="NumOfDoors" required>
+            <br><br>
+            <button type="submit">Add details for Car</button>
+        </form>
+
+        <form class="suv" method="post" action="" style="display: none;">
+            <label for="Vin">Enter Vin Number</label>
+            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
+            <br><br>
+            <label for="DrivetrainType">Enter DrivetrainType</label>
+            <input type="text" placeholder="DrivetrainType" name="DrivetrainType" id="DrivetrainType" required>
+            <br><br>
+            <label for="NunberOfCupholders">Enter NumberOfCupholders</label>
+            <input type="number" placeholder="NumberOfCupholders" name="NunberOfCupholders" id="NunberOfCupholders" required>
+            <button type="submit">Add details for SUV</button>
+        </form>
+
+        <form class="vanminivan" method="post" action="" style="display: none;">
+            <label for="Vin">Enter Vin Number</label>
+            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
+            <br><br>
+            <label for="HasDriverSideBackDoor">Enter HasDriverSideBackDoor</label>
+            <input type="text" placeholder="HasDriverSideBackDoor" name="HasDriverSideBackDoor" id="HasDriverSideBackDoor" required>
+            <br><br>
+            <button type="submit">Add details for VanMiniVan</button>
+        </form>
+
+        <form class="convertible" method="post" action="" style="display: none;">
+            <label for="Vin">Enter Vin Number</label>
+            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
+            <br><br>
+            <label for="RoofType">Enter RoofType</label>
+            <input type="text" placeholder="RoofType" name="RoofType" id="RoofType" required>
+            <br><br>
+            <label for="BackSeatCount">Enter BackSeatCount</label>
+            <input type="number" placeholder="BackSeatCount" name="BackSeatCount" id="BackSeatCount" required>
+            <br><br>
+            <button type="submit">Add details for Convertible</button>
+        </form>
+
+        <form class="truck" method="post" action="" style="display: none;">
+            <label for="Vin">Enter Vin Number</label>
+            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
+            <br><br>
+            <label for="CargoCoverType">Enter CargoCoverType</label>
+            <input type="text" placeholder="CargoCoverType" name="CargoCoverType" id="CargoCoverType" required>
+            <br><br>
+            <label for="NumberOfRearAxles">Enter NumberOfRearAxles</label>
+            <input type="number" placeholder="NumberOfRearAxles" name="NumberOfRearAxles" id="NumberOfRearAxles" required>
+            <br><br>
+            <label for="CargoCapacity">Enter CargoCapacity</label>
+            <input type="text" placeholder="CargoCapacity" name="CargoCapacity" id="CargoCapacity" required>
+            <br><br>
+            <button type="submit">Add details for Truck</button>
+        </form>
+    </div>    
     <div class="msg">{{ msg }}</div>
 
-
-
 </body>
+
+<script>
+    function myFunction() {
+        var t = document.getElementById("vehicleType").selectedOptions[0].value;
+        if(t === 'Car'){
+            var cs = document.getElementsByClassName("car");
+            for (let i = 0; i < cs.length; ++i) {
+                let c = cs[i];  
+                c.style.display="block";}
+            var ss = document.getElementsByClassName("suv");
+            for (let i = 0; i < ss.length; ++i) {
+                let s = ss[i];  
+                s.style.display="none";}
+            var vs = document.getElementsByClassName("vanminivan");
+            for (let i = 0; i < vs.length; ++i) {
+                let v = vs[i];  
+                v.style.display="none";}
+            var cos = document.getElementsByClassName("convertible");
+            for (let i = 0; i < cos.length; ++i) {
+                let co = cos[i];  
+                co.style.display="none";}
+            var ts = document.getElementsByClassName("truck");
+            for (let i = 0; i < ts.length; ++i) {
+                let t = ts[i];  
+                t.style.display="none";}
+
+        }else if(t === 'SUV'){
+            var cs = document.getElementsByClassName("car");
+            for (let i = 0; i < cs.length; ++i) {
+                let c = cs[i];  
+                c.style.display="none";}
+            var ss = document.getElementsByClassName("suv");
+            for (let i = 0; i < ss.length; ++i) {
+                let s = ss[i];  
+                s.style.display="block";}
+            var vs = document.getElementsByClassName("vanminivan");
+            for (let i = 0; i < vs.length; ++i) {
+                let v = vs[i];  
+                v.style.display="none";}
+            var cos = document.getElementsByClassName("convertible");
+            for (let i = 0; i < cos.length; ++i) {
+                let co = cos[i];  
+                co.style.display="none";}
+            var ts = document.getElementsByClassName("truck");
+            for (let i = 0; i < ts.length; ++i) {
+                let t = ts[i];  
+                t.style.display="none";}
+
+        }else if(t === 'VanMiniVan'){
+            var cs = document.getElementsByClassName("car");
+            for (let i = 0; i < cs.length; ++i) {
+                let c = cs[i];  
+                c.style.display="none";}
+            var ss = document.getElementsByClassName("suv");
+            for (let i = 0; i < ss.length; ++i) {
+                let s = ss[i];  
+                s.style.display="none";}
+            var vs = document.getElementsByClassName("vanminivan");
+            for (let i = 0; i < vs.length; ++i) {
+                let v = vs[i];  
+                v.style.display="block";}
+            var cos = document.getElementsByClassName("convertible");
+            for (let i = 0; i < cos.length; ++i) {
+                let co = cos[i];  
+                co.style.display="none";}
+            var ts = document.getElementsByClassName("truck");
+            for (let i = 0; i < ts.length; ++i) {
+                let t = ts[i];  
+                t.style.display="none";}
+
+        }else if(t === 'Convertible'){
+            var cs = document.getElementsByClassName("car");
+            for (let i = 0; i < cs.length; ++i) {
+                let c = cs[i];  
+                c.style.display="none";}
+            var ss = document.getElementsByClassName("suv");
+            for (let i = 0; i < ss.length; ++i) {
+                let s = ss[i];  
+                s.style.display="none";}
+            var vs = document.getElementsByClassName("vanminivan");
+            for (let i = 0; i < vs.length; ++i) {
+                let v = vs[i];  
+                v.style.display="none";}
+            var cons = document.getElementsByClassName("convertible");
+            for (let i = 0; i < cons.length; ++i) {
+                let con = cons[i];  
+                con.style.display="block";}
+            var ts = document.getElementsByClassName("truck");
+            for (let i = 0; i < ts.length; ++i) {
+                let t = ts[i];  
+                t.style.display="none";}
+
+
+        }else if(t === 'Truck'){
+            var cs = document.getElementsByClassName("car");
+            for (let i = 0; i < cs.length; ++i) {
+                let c = cs[i];  
+                c.style.display="none";}
+            var ss = document.getElementsByClassName("suv");
+            for (let i = 0; i < ss.length; ++i) {
+                let s = ss[i];  
+                s.style.display="none";}
+            var vs = document.getElementsByClassName("vanminivan");
+            for (let i = 0; i < vs.length; ++i) {
+                let v = vs[i];  
+                v.style.display="none";}
+            var cons = document.getElementsByClassName("convertible");
+            for (let i = 0; i < cons.length; ++i) {
+                let con = cons[i];  
+                con.style.display="none";}
+            var ts = document.getElementsByClassName("truck");
+            for (let i = 0; i < ts.length; ++i) {
+                let t = ts[i];  
+                t.style.display="block";}
+
+        }
+    };
+</script>
 </html>
