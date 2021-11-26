@@ -22,7 +22,7 @@
                     <tr>
                         {% for d in row %}
                             {% if loop.index == 4 and d <= 0.95 %}
-                                <td style="color:red">{{ d }}</td>
+                                <td style="background-color:red">{{ d }}</td>
                             {% else %}
                                 <td>{{ d }}</td>
                             {% endif %}

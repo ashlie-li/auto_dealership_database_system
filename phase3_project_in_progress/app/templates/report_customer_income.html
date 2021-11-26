@@ -1,4 +1,4 @@
-
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,14 +24,99 @@
                         {% endfor %}
                         <td><button type="button">Click Me!</button></td>
                     </tr>
-                    
+
+                {% endfor %}
+            </table>
+        </div>
+
+    </form> -->
+
+<!--
+
+</body>
+</html> -->
+
+
+<!--
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repairs by Manufacturer Report</title>
+</head>
+<body>
+    <h1>Repairs by Manufacturer Report</h1>
+
+    <form method = 'POST'>
+
+        <div class="container">
+            <table class ="part stats" name='res' border="1" >
+                {% for row in col %}
+                        <th>{{ row }}</th>
+                {% endfor %}
+                {% for row in res %}
+                    <tr>
+                        {% for d in row %}
+                            <td>{{ d }}</td>
+                        {% endfor %}
+                        <td><button id={{row[0]}} type="submit" onclick="myFunction(this.id)">Click Me!</button></td>
+                    </tr>
+
                 {% endfor %}
             </table>
         </div>
 
     </form>
 
-    
+    <script>
+        function myFunction(d){
+            window.location.href = "/report_repair_by_manu/" + d;
+        }
+    </script>
 
 </body>
-</html>
+</html> -->
+
+
+{% extends "layout.html" %}
+
+{% block title %}Monthly Sales Report{% endblock %}
+
+{% block content %}
+    <h1>Monthly Sales Report</h1>
+
+
+    <div class="container">
+        <table class ="part stats" id ="part stats" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr >
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                    <td><button id={{row[0]}} onclick="myFunction1(this.id)">More Sales Detail</button></td>
+                    <td><button id={{row[0]}} onclick="myFunction2(this.id)">More Repair Detail</button></td>
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function myFunction1(d){
+        window.location.href = "/report_customer_income/sales/" + d;
+    }
+
+    function myFunction2(d){
+        window.location.href = "/report_customer_income/repair/" + d;
+    }
+
+</script>
+{% endblock %}
+
