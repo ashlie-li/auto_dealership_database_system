@@ -1,54 +1,93 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-import runSQL
+from flask import Flask, render_template,request,jsonify
+from flask_mysqldb import MySQL,MySQLdb
 from app import app
 
 
-
-@app.route('/search', methods = ['GET', 'POST'])
-def search():
-    msg = ''
-
-    query0 = '''SELECT DISTINCT ModelYear FROM Vehicles
-                    ORDER BY ModelYear DESC;
-                    '''
-
-    drop0 = runSQL.readSQL(query0)
-
-    drop = [row[0] for row in drop0]
-
-    if request.method == 'POST' and 'manu' in request.form:
-        manu = request.form['manu']
-
-        print(manu)
-        if 'year' in request.form:
-            year = request.form['year']
-        else:
-            year = None
-        print(year)
-
-        query = '''SELECT * FROM Vehicles WHERE Manufacturer = %s
-                    AND CASE WHEN %s IS NOT NULL
-                    THEN ModelYear = %s
-                    ELSE TRUE END
-                    ;'''
-
-        query1 = '''SELECT * FROM Vehicles WHERE Manufacturer = '{a}'
-                    AND ModelYear = '{b}';'''.format(a = manu, b = year)
-
-        res = []
-
-        res = runSQL.readSQL(query, [manu, year , year ])
-        print(res)
-
-        if res:
-            msg =  'Search results:'
-            col = ('Vin', 'Manufacturer', 'ModelName', 'ModelYear', 'DateAdded','InvoicePrice', 'Description', 'ClerkUsername')
-            return render_template('search.html', msg = msg, res=res, col = col, drop = drop)
-        else:
-            msg = 'No result, search again.'
-            col = []
-            return render_template('search.html', msg = msg, drop = drop)
+mysql=MySQL(app)
 
 
-    return render_template('search.html', drop = drop)
+@app.route('/search')
+def index():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT COUNT(*) AS TotalVehiclesForSale FROM Vehicles WHERE Vehicles.Vin NOT IN (SELECT Vin FROM SalesEvents)")
+    data = cur.fetchall()[0]['TotalVehiclesForSale']
+    cur.close()
+    return render_template('search.html',data=data)
 
+
+@app.route("/searchdata", methods=["POST", "GET"])
+def searchdata():
+    if request.method == 'POST':
+        search_word = request.form['query']
+        color = request.form['color']
+        madeYear = request.form['year']
+        manufacturer = request.form['manufacturer']
+        vehicle_type = request.form['vehicle_type']
+        min = request.form['min']
+        max = request.form['max']
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        prefix = False
+
+        query = f"SELECT Vehicles.Vin,ModelYear,Manufacturer,ModelName,InvoicePrice,Description,VehicleColors.Colors " \
+                "FROM Vehicles LEFT JOIN VehicleColors ON Vehicles.Vin = VehicleColors.Vin "
+        if vehicle_type != '':
+            if vehicle_type == 'car':
+                query = f"SELECT Vehicles.Vin,ModelYear,Manufacturer,ModelName,InvoicePrice,Description,VehicleColors.Colors " \
+                        "FROM Vehicles LEFT JOIN VehicleColors ON Vehicles.Vin = VehicleColors.Vin RIGHT JOIN Cars ON Vehicles.Vin = Cars.Vin "
+            elif vehicle_type == 'convertible':
+                query = f"SELECT Vehicles.Vin,ModelYear,Manufacturer,ModelName,InvoicePrice,Description,VehicleColors.Colors " \
+                        "FROM Vehicles LEFT JOIN VehicleColors ON Vehicles.Vin = VehicleColors.Vin RIGHT JOIN Convertibles ON Vehicles.Vin = Convertibles.Vin "
+            elif vehicle_type == 'truck':
+                query = f"SELECT Vehicles.Vin,ModelYear,Manufacturer,ModelName,InvoicePrice,Description,VehicleColors.Colors " \
+                        "FROM Vehicles LEFT JOIN VehicleColors ON Vehicles.Vin = VehicleColors.Vin RIGHT JOIN Trucks ON Vehicles.Vin = Trucks.Vin "
+            elif vehicle_type == 'van':
+                query = f"SELECT Vehicles.Vin,ModelYear,Manufacturer,ModelName,InvoicePrice,Description,VehicleColors.Colors " \
+                        "FROM Vehicles LEFT JOIN VehicleColors ON Vehicles.Vin = VehicleColors.Vin RIGHT JOIN VanMiniVans ON Vehicles.Vin = VanMiniVans.Vin "
+            elif vehicle_type == 'suv':
+                query = f"SELECT Vehicles.Vin,ModelYear,Manufacturer,ModelName,InvoicePrice,Description,VehicleColors.Colors " \
+                        "FROM Vehicles LEFT JOIN VehicleColors ON Vehicles.Vin = VehicleColors.Vin RIGHT JOIN SUVs ON Vehicles.Vin = SUVs.Vin "
+        if color != '':
+            query = query + "WHERE Colors = '{}'"
+            prefix = True
+            query = query.format(color)
+        if madeYear != '':
+            if prefix:
+                query = query + "AND ModelYear = '{}'"
+            else:
+                query = query + "WHERE ModelYear = '{}'"
+                prefix = True
+            query = query.format(madeYear)
+        if manufacturer != '':
+            if prefix:
+                query = query + "AND Manufacturer = '{}'"
+            else:
+                query = query + "WHERE Manufacturer = '{}'"
+                prefix = True
+            query = query.format(manufacturer)
+        if min != '':
+            if prefix:
+                query = query + "AND InvoicePrice >= '{}'"
+            else:
+                query = query + "WHERE InvoicePrice >= '{}'"
+                prefix = True
+            query = query.format(min)
+        if max != '':
+            if prefix:
+                query = query + "AND InvoicePrice <= '{}'"
+            else:
+                query = query + "WHERE InvoicePrice <= '{}'"
+                prefix = True
+            query = query.format(max)
+        if search_word != '':
+            if prefix:
+                query = query + "AND (Manufacturer LIKE '{}' OR ModelYear LIKE'{}' OR ModelName LIKE '{}' OR Description LIKE '{}')"
+            else:
+                query = query + "WHERE (Manufacturer LIKE '{}' OR ModelYear LIKE'{}' OR ModelName LIKE '{}' OR Description LIKE '{}')"
+            query = query.format(search_word,search_word,search_word,search_word)
+        cur.execute(query)
+        programming = cur.fetchall()
+        return jsonify({'data': render_template('result.html', programming=programming)})
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

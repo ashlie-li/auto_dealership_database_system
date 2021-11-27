@@ -1,51 +1,225 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEARCH</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vehicle Search Bar</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+$(function() {
+  $(".search_button").click(function() {
+      var search_word = $("#search_box").val();
+      var color = $("#color").val();
+      var year = $("#year").val();
+      var vehicle_type = $("#vehicle_type").val();
+      var manufacturer = $("#manufacturer").val();
+      var minPrice = $("#min_price").val();
+      var maxPrice = $("#max_price").val();
+      {#var dataString = 'search_word='+ search_word;#}
+      if(search_word=='' && color == '' && year == '' && manufacturer == '' && minPrice == '' && maxPrice == '' && vehicle_type == ''){
+      }else{
+        $.ajax({
+          type: "POST",
+          url: "/searchdata",
+          data: {query:search_word, color:color, year: year, manufacturer: manufacturer, min:minPrice,max:maxPrice, vehicle_type:vehicle_type},
+          cache: false,
+          beforeSend: function(html) {
+              document.getElementById("insert_search").innerHTML = '';
+              $("#flash").show();
+              $("#searchword").show();
+              $(".searchword").html(search_word);
+              $("#flash").html('<img src="/static/img/loader.gif" align="absmiddle"> Loading Results...');
+            },
+          success: function(html){
+              $("#insert_search").show();
+              $("#insert_search").append(html.data);
+              $("#flash").hide();
+          }
+        });
+      }
+    return false;
+  });
+});
+</script>
 </head>
 <body>
-    <form class="search_form" method="post" action="">
-        <input type="text" placeholder="search" name="manu" id="manu" required>
+<div align="center">
+  <div style="width:700px">
+  <div style="margin-top:20px; text-align:left">
+    <p align="center"><h1>Vehicle Search</h1></p>
+    <form method="get" action="">
+        <p>
+            <label for="color">Color</label>
+            <select name="color" id="color" class="form-control">
+            <option value="">--Please choose an option--</option>
+                <option value="alum">Aluminum</option>
+                <option value="beige">Beige</option>
+                <option value="black">Black</option>
+                <option value="blue">Blue</option>
+                <option value="brown">Brown</option>
+                <option value="bronze">Bronze</option>
+                <option value="claret">Claret</option>
+                <option value="copper">Copper</option>
+                <option value="cream">Cream</option>
+                <option value="gold">Gold</option>
+                <option value="gray">Gray</option>
+                <option value="green">Green</option>
+                <option value="maroon">Maroon</option>
+                <option value="metallic">Metallic</option>
+                <option value="navy">Navy</option>
+                <option value="orange">Orange</option>
+                <option value="pink">Pink</option>
+                <option value="purple">Purple</option>
+                <option value="red">Red</option>
+                <option value="rose">Rose</option>
+                <option value="rust">Rust</option>
+                <option value="silver">Silver</option>
+                <option value="tan">Tan</option>
+                <option value="turquoise">Turquoise</option>
+                <option value="white">White</option>
+                <option value="yellow">Yellow</option>
+{#            {% for row in employee %}#}
+{#                <option value="{{row.office}}">{{row.office}}</option>';#}
+{#            {% endfor %}#}
+            </select>
+        </p>
+        <p>
+            <label for="type">Vehicle Type</label>
+            <select name="type" id="vehicle_type">
+                <option value="">--Please choose an option--</option>
+                <option value="car">Car</option>
+                <option value="convertible">Convertible</option>
+                <option value="truck">Truck</option>
+                <option value="van">Van/Minivan</option>
+                <option value="suv">SUV</option>
+            </select>
+        </p>
+        <p>
+            <label for="year">Model Year</label>
+            <select name="year" id="year" class="form-control">
+                <option value="">--Please choose an option--</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+            </select>
+        </p>
+        <label for="manufacturer">Manufacturer</label>
+            <select name="manufacturer" id="manufacturer">
+                <option value="">--Please choose an option--</option>
+                <option value="acura">Acura</option>
+                <option value="alfa">Alfa Romeo</option>
+                <option value="aston">Aston Martin</option>
+                <option value="audi">Audi</option>
+                <option value="bentley">Bentley</option>
+                <option value="bmw">BMW</option>
+                <option value="buick">Buick</option>
+                <option value="cadillac">Cadillac</option>
+                <option value="chevrolet">Chevrolet</option>
+                <option value="chrysler">Chrysler</option>
+                <option value="dodge">Dodge</option>
+                <option value="ferrari">Ferrari</option>
+                <option value="fiat">FIAT</option>
+                <option value="ford">Ford</option>
+                <option value="freightiner">Freightiner</option>
+                <option value="genesis">Genesis</option>
+                <option value="gmc">GMC</option>
+                <option value="honda">Honda</option>
+                <option value="hyundai">Hyundai</option>
+                <option value="infiniti">INFINITI</option>
+                <option value="jaguar">Jaguar</option>
+                <option value="jeep">Jeep</option>
+                <option value="kia">Kia</option>
+                <option value="lamborghini">Lamborghini</option>
+                <option value="land">Land Rover</option>
+                <option value="lexus">Lexus</option>
+                <option value="lincoln">Lincoln</option>
+                <option value="lotus">Lotus</option>
+                <option value="maserati">Maserati</option>
+                <option value="mazda">MAZDA</option>
+                <option value="mclaren">McLaren</option>
+                <option value="benz">Mercedes-Benz</option>
+                <option value="mini">MINI</option>
+                <option value="mitsubishi">Mitsubishi</option>
+                <option value="nissan">Nissan</option>
+                <option value="porsche">Porsche</option>
+                <option value="rolls">Rolls-Royce</option>
+                <option value="saab">SAAB</option>
+                <option value="smart">smart</option>
+                <option value="subaru">Subaru</option>
+                <option value="tesla">Tesla</option>
+                <option value="toyota">Toyota</option>
+                <option value="vauxhall">Vauxhall</option>
+                <option value="volkswagen">Volkswagen</option>
+                <option value="volvo">Volvo</option>
+            </select>
+        </p>
+        <p>
+            <label for="price">Price:</label>
+            <input type="number" name="minNumber" id="min_price" placeholder="Min" min="5" />
+            <input type="number" name="maxNumber" id="max_price" placeholder="Max" max="40" />
+        </p>
 
-        <label for="year">Choose Model Year</label>
-        <select name="year" id="year">
-            <option disabled selected value> -- select an option -- </option>
-            {% for var in drop %}
-            <option value="{{ var }}">{{ var }}</option>
-            {% endfor %}
-        </select>
-
-        <button type="submit">SEARCH<i class="fa fa-search"></i>
-        </button>
+    <input type="text" name="search" id="search_box" class='search_box'/>
+    <input type="submit" value="Search" class="search_button" /><br />
+    <span style="color:#666666; font-size:14px; font-family:Arial, Helvetica, sans-serif;"><b>Ex :</b> BMW</span>
     </form>
-    <p></p>
-    <div class="msg">{{ msg }}</div>
-    <form method = 'POST'>
-        <div class="container">
-            <table class ="search_results" name='res' border="1" >
-                {% for row in col %}
-                        <th>{{ row }}</th>
-                {% endfor %}
-                {% for row in res %}
-                    <tr>
-                        {% for d in row %}
-                            <td>{{ d }}</td>
-                        {% endfor %}
-                        <td><button type="button">Detail Page</button></td>
-                    </tr>
-                    
-                    
-                {% endfor %}
-            </table>
-        </div>
-    </form>
+      <div class="totalSaleNum"> Total Available Vehicles For Sale: {{data}} </div>
+  </div>
+  <div>
+    <div id="searchword">Search results for <span class="searchword"></span></div>
+    <div id="flash"></div>
+    <ol id="insert_search" class="update"></ol>
+  </div>
 
+  </div>
+</div>
+<style>
+body{
+font-family:Arial, Helvetica, sans-serif;
+}
+a
+{
+color:#DF3D82;
+text-decoration:none
+}
+a:hover
+{
+color:#DF3D82;
+text-decoration:underline;
+}
+#search_box{
+ padding:3px; border:solid 1px #666666; width:400px; height:45px; font-size:18px;-moz-border-radius: 6px;-webkit-border-radius: 6px;
+}
+.search_button{
+ height:50px;border:#fe6f41 solid 1px; padding-left:9px;padding-right:9px;padding-top:9px;padding-bottom:9px; color:#000; font-weight:bold; font-size:16px;-moz-border-radius: 6px;-webkit-border-radius: 6px;
+}
+ol.update{
+ list-style:none;font-size:1.1em; margin-top:20px;padding-left:0;
+}
+#flash{
+ margin-top:20px;
+ text-align:left;
+}
+#searchword{
+ text-align:left; margin-top:20px; display:none;
+ font-family:Arial, Helvetica, sans-serif;
+ font-size:16px;
+ color:#000;
+}
+.totalSaleNum {
+    margin-top: 10px;
+    color:red;
+}
+.searchword{
+ font-weight:bold;
+ color:#fe6f41;
+}
+ol.update li{ border-bottom:#dedede dashed 1px; text-align:left;padding-top:10px;padding-bottom:10px;}
+ol.update li:first-child{ border-top:#dedede dashed 1px; text-align:left}
+</style>
 
-
-    
 </body>
 </html>
-
