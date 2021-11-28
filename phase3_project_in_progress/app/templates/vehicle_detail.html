@@ -1,0 +1,137 @@
+{% extends "layout.html" %}
+<title>Vehicle Detail</title>
+{% block title %}Vehicle Detail{% endblock %}
+
+{% block content %}
+    <h1>Vehicle Detail</h1>
+
+    <div class="container">
+        <table class ="vehicle detail" name='vehicle detail' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            <th class='clerk' style="display: none;">Invoice Price</th>
+            <th class="Manager" style="display: none;">Date Added</th>
+            <th class="Manager" style="display: none;">Added By</th>
+            {% for row in res %}
+                <tr>
+                    {% for i in range(0,8) %}
+                        <td>{{row[i]}}</td>
+                    {% endfor %}
+                    <td class='clerk' style="display: none;">{{row[8]}}</td>
+                    <td class="Manager" style="display: none;">{{row[9]}}</td>
+                    <td class="Manager" style="display: none;">{{row[10]}}</td>
+                </tr>  
+            {% endfor %}
+        </table>
+        <p></p>
+    </div>
+
+    <div class="container">
+        <h3 >Type Attributes</h3>
+        {% for i in range(col2|length) %}
+            <p>{{col2[i]}}: {{res2[0][i]}}</p>
+        {% endfor %}
+    </div> 
+
+    <div class="container" id="sale section">
+        <h2 >Sale Section</h2>
+        {% for i in range(0, 9) %}
+            <p class = "sale" name = "{{res_sale[0][i]}}">{{col_sale[i]}}: {{res_sale[0][i]}}</p>
+        {% endfor %}
+    </div> 
+
+    <div>
+        <form action="/add_sales/{{Vin}}" target="_blank" id="sale btn">
+            <button type="submit">Sell This Vehicle</button>
+        </form>
+    </div>
+    
+    <div class="container" id="repair section">
+        <h2 >Repair Section</h2>
+        <table border="1">
+            <tbody>
+                {% for row in col_repair %}
+                        <th>{{ row }}</th>
+                {% endfor %}
+                {% for row in res_repair %}
+                    <tr >
+                        {% for d in row %}
+                            <td>{{ d }}</td>
+                        {% endfor %}
+                    </tr>  
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var role = "{{ role }}"
+    if(role === "Owner" || role === "Salesperson" ){
+        document.getElementById("sale btn").style.display="block";
+    }else{document.getElementById("sale btn").style.display="none";};
+
+
+    var ManagerOnly = document.getElementsByClassName("Manager")
+    var ClerkManager = document.getElementsByClassName("clerk")
+
+    if(role === "Owner" || role === "Manager" ){
+
+        document.getElementById("sale section").style.display="block";
+        document.getElementById("repair section").style.display="block";
+
+        for(i=0;i<ManagerOnly.length;i++){
+            let mo = ManagerOnly[i]
+            mo.style.display="table-cell"
+        }
+
+    }else{
+
+        document.getElementById("sale section").style.display="none";
+        document.getElementById("repair section").style.display="none";
+        for(i=0;i<ManagerOnly.length;i++){
+            let mo = ManagerOnly[i]
+            mo.style.display="none"
+        }
+
+    };  
+
+
+    if(role === "Owner" || role === "Manager" || role ==="Inventory Clerk"){
+        for(i=0;i<ClerkManager.length;i++){
+            let cm = ClerkManager[i]
+            cm.style.display="table-cell"
+        }
+    }else{
+        for(i=0;i<ClerkManager.length;i++){
+            let cm = ClerkManager[i]
+            cm.style.display="none"
+        }
+    }
+    
+    var d = '{{dsply_sale}}';
+    if (d === ""){
+        document.getElementById("sale btn").style.display="none";
+    }else{
+        document.getElementById("sale section").style.display="none";
+    };
+    var k = '{{dsply_repair}}';
+    console.log(k);
+    if (k === ""){
+        document.getElementById("repair section").style.display="none";
+    };
+
+    sale_list = document.getElementsByClassName("sale")
+
+    for(let i=0; i<sale_list.length; i++){
+        s = sale_list[i]
+        if(s.getAttribute("name") === "None"){
+            s.style.display = 'none'
+        }
+    }
+
+
+</script>
+{% endblock %}

@@ -21,4 +21,4 @@ def below_cost_sales():
     col = ('Sale Date', 'Sale Price', 'Invoice Price', 'Price Ratio', 'Customer Name', 'Salesperson Name')
 
 
-    return render_template('report_below_cost_sales.html', col = col, res = res)
+    return render_template('report_below_cost_sales.html', col = col, res = res, role=role)

@@ -1,0 +1,148 @@
+{% extends "layout.html" %}
+
+
+{% block title %}Search or Add Customer{% endblock %}
+
+{% block content %}
+    <h1>Search Customer</h1>
+    <form class="search_form" method="post" action="">
+        <label for="input_id">Please Enter Customer License or Tax Num</label>
+        <input type="text" placeholder="enter the id" name="input_id" id="input_id" required>
+        <br>
+        <br>
+        <label for="c_type">Choose Customer Type</label>
+        <select name="c_type" id="c_type" required>
+            <option disabled selected value> -- select an option -- </option>
+            <option value="Business">Business</option>
+            <option value="Person">Person</option>
+        </select>
+        <input type = "hidden" name = "odometer" value = "{{odometer}}"/>
+        <button type="submit">SEARCH</button>
+    </form>
+    <p></p>
+    <div class="msg">{{ msg1 }}</div>
+    
+    <div class="container" id="search_result_id", style="display: none;">
+        <table class ="search_results" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                    <td>
+                        <form method ="POST" action="/{{Act}}/{{Vin}}">
+                            <input type = "hidden" name = "odometer" value = "{{odometer}}"/>
+                            <button type="submit" name = 'CustomerID' value={{CID}}>Confirm Customer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h1>Add Customer</h1>
+    <label for="c_type2">Choose Customer Type</label>
+    <select name="c_type2" id="c_type2" required>
+        <option disabled selected value> -- select an option -- </option>
+        <option value="Business">Business</option>
+        <option value="Person">Person</option>
+    </select>
+    <input type="submit" id="submit_type" value="Confirm Type" onclick="myFunction()"/>
+    <br><br>
+    
+    <div>
+        <form class="persons" method="post" action="/{{Act}}/search_add_customer/add/{{Vin}}" style="display: none;">
+            <input type = "hidden" name = "odometer" value = "{{odometer}}"/>
+            <label for="license">License</label>
+            <input type="text" placeholder="enter license" name="license" id="license" required>
+            <br><br>
+            <label for="fname">Customer First Name</label>
+            <input type="text" placeholder="enter first name" name="fname" id="fname" required>
+            <br><br>
+            <label for="lname">Customer Last Name</label>
+            <input type="text" placeholder="enter last name" name="lname" id="lname" required><br><br>
+            <label for="Email">Email</label>
+            <input type="text" placeholder="enter license" name="Email" id="Email">
+            <br><br>
+            <label for="Phone">Phone Number</label>
+            <input type="text" placeholder="enter Phone" name="Phone" id="Phone" required>
+            <br><br>
+            <label for="license">Address</label>
+            <input type="text" placeholder="enter street" name="street" id="street" required>
+            <input type="text" placeholder="enter city" name="city" id="city" required>
+            <input type="text" placeholder="enter state" name="state" id="state" required>
+            <input type="text" placeholder="enter zipcode" name="zipcode" id="zipcode" required>
+            <br><br>
+            <button type="submit">Add Customer And Return to Transcation Page</button>
+        </form>
+
+        <form class="business" method="post" action="/{{Act}}/search_add_customer/add/{{Vin}}" style="display: none;">
+            <input type = "hidden" name = "odometer" value = "{{odometer}}"/>
+            <label for="TaxNum">Tax Num</label>
+            <input type="text" placeholder="enter tax num" name="TaxNum" id="TaxNum" required>
+            <br><br>
+            <label for="ComName">Company Name</label>
+            <input type="text" placeholder="enter company name" name="ComName" id="ComName" required>
+            <br><br>
+            <label for="cfname">Contact First Name</label>
+            <input type="text" placeholder="enter contact first name" name="cfname" id="cfname" required>
+            <br><br>
+            <label for="clname">Contact Last Name</label>
+            <input type="text" placeholder="enter contact last name" name="clname" id="clname" required>
+            <br><br>
+            <label for="ctitle">Contact Title</label>
+            <input type="text" placeholder="enter contact title" name="ctitle" id="ctitle" required><br><br>
+            <label for="Email">Email</label>
+            <input type="text" placeholder="enter email" name="Email" id="Email">
+            <br><br>
+            <label for="Phone">Phone Number</label>
+            <input type="text" placeholder="enter Phone" name="Phone" id="Phone" required>
+            <br><br>
+            <label for="license">Address</label>
+            <input type="text" placeholder="enter street" name="street" id="street" required>
+            <input type="text" placeholder="enter city" name="city" id="city" required>
+            <input type="text" placeholder="enter state" name="state" id="state" required>
+            <input type="text" placeholder="enter zipcode" name="zipcode" id="zipcode" required>
+            <br><br>
+            <button type="submit">Add Customer And Return to Transcation Page</button>
+        </form>
+    </div>
+    <div class="msg">{{ msg2 }}</div>
+    <div class="msg">{{ msg3 }}</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var m = ' {{ col }}'
+    console.log(m.length)
+    if(m.length >1){
+        document.getElementById("search_result_id").style.display="block"
+    }
+
+    function myFunction() {
+        var t = document.getElementById("c_type2").selectedOptions[0].value;
+        if(t === 'Person'){
+            var ps = document.getElementsByClassName("persons");
+            for (let i = 0; i < ps.length; ++i) {
+                let p = ps[i];  
+                p.style.display="block";}
+            var bs = document.getElementsByClassName("business");
+            for (let i = 0; i < bs.length; ++i) {
+                let b = bs[i];  
+                b.style.display="none";}
+        }else{
+            var ps = document.getElementsByClassName("persons");
+            for (let i = 0; i < ps.length; ++i) {
+                let p = ps[i];  
+                p.style.display="none";}
+            var bs = document.getElementsByClassName("business");
+            for (let i = 0; i < bs.length; ++i) {
+                let b = bs[i];  
+                b.style.display="block";}
+        }
+    };
+</script>
+{% endblock %}

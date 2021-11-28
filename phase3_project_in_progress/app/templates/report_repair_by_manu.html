@@ -1,52 +1,9 @@
-<!--
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Repairs by Manufacturer Report</title>
-</head>
-<body>
-    <h1>Repairs by Manufacturer Report</h1>
-
-    <form method = 'POST'>
-
-        <div class="container">
-            <table class ="part stats" name='res' border="1" >
-                {% for row in col %}
-                        <th>{{ row }}</th>
-                {% endfor %}
-                {% for row in res %}
-                    <tr>
-                        {% for d in row %}
-                            <td>{{ d }}</td>
-                        {% endfor %}
-                        <td><button id={{row[0]}} type="submit" onclick="myFunction(this.id)">Click Me!</button></td>
-                    </tr>
-
-                {% endfor %}
-            </table>
-        </div>
-
-    </form>
-
-    <script>
-        function myFunction(d){
-            window.location.href = "/report_repair_by_manu/" + d;
-        }
-    </script>
-
-</body>
-</html> -->
-
-
 {% extends "layout.html" %}
 
-{% block title %}Monthly Sales Report{% endblock %}
+{% block title %}Repair by Manufacturer Type Model Report{% endblock %}
 
 {% block content %}
-    <h1>Monthly Sales Report</h1>
+    <h1>Repair by Manufacturer Type Model Report</h1>
 
 
     <div class="container">
@@ -59,7 +16,7 @@
                     {% for d in row %}
                         <td>{{ d }}</td>
                     {% endfor %}
-                    <td><button id={{row[0]}} onclick="myFunction(this.id)">More Detail</button></td>
+                    <td><button id="{{row[0]}}" name="{{row[1]}}" onclick="myFunction(this.id, this.name)">More Detail</button></td>
                 </tr>
 
             {% endfor %}
@@ -69,7 +26,10 @@
 
 {% block scripts %}
 <script>
-    function myFunction(d){
+    function myFunction(d, n){
+        if(n==="None"){
+            return false
+        }
         window.location.href = "/report_repair_by_manu/" + d;
     }
 </script>

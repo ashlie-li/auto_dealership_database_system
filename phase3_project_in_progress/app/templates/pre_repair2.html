@@ -1,0 +1,104 @@
+{% extends "layout.html" %}
+
+
+{% block title %}Repair Vehicle{% endblock %}
+
+{% block content %}
+    <h1>Repair Vehicle</h1>
+    <p>You need to select a vechile first.</p>
+    <form id="search_form" method="POST" action="">
+        <input type="text" placeholder="Search by VIN" name="Vin" id="Vin" required>
+        <button type="submit">SEARCH</button>
+    </form>
+    <br>
+    <div class="msg">{{ msg }}</div>
+    <div class="msg">{{ msg2 }}</div>
+    <div id="search_results">
+        <table name='res1' border="1" >
+            {% for row in col1 %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res1 %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>  
+            {% endfor %}
+        </table>
+    </div>
+    <br>
+    <div class="msg">{{ msg3 }}</div>
+    <div id="odo_form" style="display: none;" >
+        <form method='POST' onsubmit="return myFuction();" action="/{{Act}}/search_add_customer/{{Vin}}" >
+            <input type="number" min="0" placeholder="Odometer" name="odometer" id="odometer_id" required>
+            <button >Confirm Odometer</button>
+        </form>
+    </div>
+    <br>    
+    <div id="repair_results">
+        <table id ="repair_form"  name='res1' border="1" >
+            {% for row in col2 %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res2 %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                    <td>
+                        <form action="" method="POST" id="update btn">
+                            <input type = "hidden" name = "CustomerID" value = "{{CustomerID}}" />
+                            <input type = "hidden" name = "Vin" value = "{{Vin}}" />
+                            <button type="submit">Confirm vehicle and update repair</button>
+                        </form>
+                    </td>  
+                </tr>  
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var search_res = document.getElementById("search_results")
+    var repair_res = document.getElementById("repair_results")
+    var odo_form = document.getElementById("odo_form")
+    var status = '{{ status }}'
+    console.log(status)
+    if(status === 'none'){
+        search_res.style.display = 'none';
+        repair_res.style.display = 'none';
+        odo_form.style.display = 'none';
+    }else if(status==='create'){
+        search_res.style.display = 'block';
+        repair_res.style.display = 'none';
+        odo_form.style.display = 'block';
+    }else if(status==='update'){
+        search_res.style.display = 'block';
+        repair_res.style.display = 'block';
+        odo_form.style.display = 'none';        
+    }else{
+        search_res.style.display = 'none';
+        repair_res.style.display = 'none';
+        odo_form.style.display = 'none';   
+    }
+
+    function isNumeric(n) {
+        if (typeof n != "string") return false
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    }
+
+    function myFuction(){
+        var odo = document.getElementById('odometer_id').value
+        console.log(odo)
+        if(isNumeric(odo)){
+            return true
+        }else{
+            alert('Invalid Information')
+            return false
+        }
+    }
+
+</script>
+{% endblock %}

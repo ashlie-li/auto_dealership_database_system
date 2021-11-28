@@ -9,7 +9,7 @@ def sales_by_manufacturer():
     if 'role' not in session or session['role'] not in ['Owner', 'Manager']:
         return render_template( 'error_handle.html', msg='You are not authorized to view this report', to_url = '/login')
     role = session['role']
-
+    
     query0 = 'SELECT MAX(SaleDate) FROM SalesEvents;'
     lastSaleDate = runSQL.readSQL(query0)
     print(lastSaleDate[0][0])
@@ -25,4 +25,4 @@ def sales_by_manufacturer():
     col = ('Manufacturer', 'Last Month Sales', 'Last Year Sales', 'All Time Sales')
 
 
-    return render_template('report_sales_by_manufacturer.html', col = col, res = res)
+    return render_template('report_sales_by_manufacturer.html', col = col, res = res, role=role)

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+
+{% block title %}Sell Vehicle{% endblock %}
+<title>Sell Vehicle</title>
+
+{% block content %}
+    <h1>Sell Vehicle {{Vin}}</h1>
+    <p>Customer {{CustomerID}} is selected.</p>
+    <form class="sales_form" method="POST" action="/add_sales/{{Vin}}">
+        <input type = "hidden" name = "CustomerID" value = "{{CustomerID}}" />
+        <label for="SalePrice">Please Enter the Sale Price</label>
+        <input type="number" min="0" placeholder="sale price" name="SalePrice" id="SalePrice" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="msg">{{ msg }}</div>
+{% endblock %}

@@ -1,36 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Below Cost Sales Report</title>
-</head>
-<body>
+{% extends "layout.html" %}
+
+{% block title %}Below Cost Sales Repor{% endblock %}
+
+{% block content %}
     <h1>Below Cost Sales Report</h1>
+
+
     <div class="container">
-        <table class ="average time" name='res' border="1" >
-            <thead>
+        <table class ="below cost" id ="below_cost" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
                 <tr>
-                    {% for row in col %}
-                        <th>{{ row }}</th>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
                     {% endfor %}
                 </tr>
-            </thead>
-            <tbody>
-                {% for row in res %}
-                    <tr>
-                        {% for d in row %}
-                            {% if loop.index == 4 and d <= 0.95 %}
-                                <td style="background-color:red">{{ d }}</td>
-                            {% else %}
-                                <td>{{ d }}</td>
-                            {% endif %}
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
+                
+            {% endfor %}
         </table>
     </div>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+<SCript>
+    var rows = document.getElementById("below_cost").rows;
+    for (let i = 1; i < rows.length; i++) {
+        var row = rows[i]
+        var cell = rows[i].cells[3];
+        console.log(cell)
+        if(cell.innerHTML < 0.95){
+            row.style.backgroundColor = "Tomato"
+        }
+    }
+</SCript>
+{% endblock %}

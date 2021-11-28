@@ -1,239 +1,185 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Vehicle</title>
-</head>
-<body>
-    <form class="add_vehicle" method="post" action="">
+{% extends "layout.html" %}
+
+{% block title %}Add Vehicle{% endblock %}
+
+{% block content %}
+    <h1>Add Vehicle</h1>
+    <form class="add_vehicle" method="post"  action="" id="form1">
         <label for="Vin">Enter Vin</label>
         <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
         <p></p>
         <label for="Manu">Enter Manufacturer</label>
-        <input type="text" placeholder="Manufacturer" name="Manu" id="Manu" required>
+        <select name="Manu" id="Manu" required>
+            <option disabled selected value> -- select an option -- </option>
+            {% for var in dropManu %}
+                <option value="{{ var }}">{{ var }}</option>
+            {% endfor %}
+        </select>
         <p></p>
         <label for="ModelName">Enter Model Name</label>
         <input type="text" placeholder="Model Name" name="ModelName" id="ModelName" required>
         <p></p>
         <label for="ModelYear">Enter Model Year</label>
-        <input type="text" placeholder="Model Year" name="ModelYear" id="ModelYear" required>
+        <input type="number" placeholder="Model Year" name="ModelYear" id="ModelYear" required>
         <p></p>
         <label for="InvoicePrice">Enter Invoice Price</label>
-        <input type="text" placeholder="Invoice Price" name="InvoicePrice" id="InvoicePrice" required>
-        <p></p>
-        <label for="ClerkUsername">Enter ClerkUsername</label>
-        <input type="text" placeholder="ClerkUsername" name="ClerkUsername" id="ClerkUsername" required>
+        <input type="number" placeholder="Invoice Price" name="InvoicePrice" id="InvoicePrice" required>
         <p></p>
         <label for="Description">Description</label>
         <input type="text" name="Description" id="Description" style="width:500px;">
         <p></p>
         <label for="color">Choose Colors</label>
         <select name="color" id="color" multiple required>
-            <option disabled selected value> -- select a color option -- </option>
+            <option disabled selected value> -- select an option -- </option>
             {% for var in dropColor %}
             <option value="{{ var }}">{{ var }}</option>
             {% endfor %}
         </select>
-    </form>
-    <p></p>
-    <div class="msg">{{ msg1 }}</div>
+        <p></p>
+    
 
-
-    <label for="vehicleType">Choose Types</label>
-    <select name="vehicleType" id="vehicleType" multiple required>
-        <option disabled selected value> -- select a vehicle type -- </option>
-        <option value="Car">Car</option>
-        <option value="SUV">SUV</option>
-        <option value="VanMinVan">VanMinVan</option>
-        <option value="Convertible">Convertible</option>
-         <option value="Truck">Truck</option>
+    <br><br>
+    <select name="Type" id="Type" required>
+        <option disabled selected value> -- select an option -- </option>
+        {% for var in dropType %}
+            <option value="{{ var }}">{{ var }}</option>
+        {% endfor %}
     </select>
-    <input type="submit" id="submit_type" value="Confirm Type" onclick="myType()"/>
+    
     <br><br>
 
-    <div>
-        <form class="car" method="post" action="" style="display: none;">
-            <label for="Vin">Enter Vin Number</label>
-            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
-            <br><br>
-            <label for="NumOfDoors">Enter NumOfDoors</label>
-            <input type="number" placeholder="NumOfDoors" name="NumOfDoors" id="NumOfDoors" required>
-            <br><br>
-            <button type="submit">Add details for Car</button>
-        </form>
+        <div class="add_vehicle2" id="Car" style="display: none;">
+            <label for="NumDoor">Enter Number of Doors</label>
+            <input type="number" name="NumDoor" id="NumDoor"> 
+            <p></p>
+        </div>
 
-        <form class="suv" method="post" action="" style="display: none;">
-            <label for="Vin">Enter Vin Number</label>
-            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
-            <br><br>
-            <label for="DrivetrainType">Enter DrivetrainType</label>
-            <input type="text" placeholder="DrivetrainType" name="DrivetrainType" id="DrivetrainType" required>
-            <br><br>
-            <label for="NunberOfCupholders">Enter NumberOfCupholders</label>
-            <input type="number" placeholder="NumberOfCupholders" name="NunberOfCupholders" id="NunberOfCupholders" required>
-            <button type="submit">Add details for SUV</button>
-        </form>
+        <div class="add_vehicle2" id="SUV" style="display: none;">
+                <label for="NumCup">Enter Number of Cupholders</label>
+                <input type="number" name="NumCup" id="NumCup">
+                <p></p>
+                <label for="Drive">Enter Drivetrain Type</label>
+                <input type="text" name="Drive" id="Drive">
+                <p></p>
+        </div>
 
-        <form class="vanminivan" method="post" action="" style="display: none;">
-            <label for="Vin">Enter Vin Number</label>
-            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
-            <br><br>
-            <label for="HasDriverSideBackDoor">Enter HasDriverSideBackDoor</label>
-            <input type="text" placeholder="HasDriverSideBackDoor" name="HasDriverSideBackDoor" id="HasDriverSideBackDoor" required>
-            <br><br>
-            <button type="submit">Add details for VanMiniVan</button>
-        </form>
+        <div class="add_vehicle2" id="Truck" style="display: none;">
+            <label for="NumAX">Enter Number of Rear Axles</label>
+            <input type="number" name="NumAX" id="NumAX">
+            <p></p>
+            <label for="Capacity">Enter Cargo Capacity</label>
+            <input type="number" name="Capacity" id="Capacity">
+            <p></p>
+            <label for="CargoT">Enter Cargo Type</label>
+            <input type="text" name="CargoT" id="CargoT">
+            <p></p>
+        </div>
 
-        <form class="convertible" method="post" action="" style="display: none;">
-            <label for="Vin">Enter Vin Number</label>
-            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
-            <br><br>
-            <label for="RoofType">Enter RoofType</label>
-            <input type="text" placeholder="RoofType" name="RoofType" id="RoofType" required>
-            <br><br>
-            <label for="BackSeatCount">Enter BackSeatCount</label>
-            <input type="number" placeholder="BackSeatCount" name="BackSeatCount" id="BackSeatCount" required>
-            <br><br>
-            <button type="submit">Add details for Convertible</button>
-        </form>
+        <div class="add_vehicle2" id="Van MiniVan" style="display: none;">
+            <label for="Side">Has Driver Side Back Door</label>
+            <select name="Side" id="Side">
+                <option disabled selected value> -- select an option -- </option>
+                <option value="1">YES</option>
+                <option value="0">NO</option>
+            </select>
+            <p></p>
+        </div>
+        
+        <div class="add_vehicle2" id="Convertible" style="display: none;">
+            <label for="Back">Enter Back Seat Count</label>
+            <input type="number" name="CBack" id="Back">
+            <p></p>
+            <label for="Roof">Enter Roof Type</label>
+            <input type="text" name="Roof" id="Roof">
+            <p></p>
+        </div>
+    </form>
+    <button onclick="typeFunction()">Select or Change Type</button>
+    <br><br>
+    <button class="add_vehicle2" onclick="submitFunction()" id="add" style="display: none;">Add Vehicle</button>
 
-        <form class="truck" method="post" action="" style="display: none;">
-            <label for="Vin">Enter Vin Number</label>
-            <input type="text" placeholder="Vin" name="Vin" id="Vin" required>
-            <br><br>
-            <label for="CargoCoverType">Enter CargoCoverType</label>
-            <input type="text" placeholder="CargoCoverType" name="CargoCoverType" id="CargoCoverType" required>
-            <br><br>
-            <label for="NumberOfRearAxles">Enter NumberOfRearAxles</label>
-            <input type="number" placeholder="NumberOfRearAxles" name="NumberOfRearAxles" id="NumberOfRearAxles" required>
-            <br><br>
-            <label for="CargoCapacity">Enter CargoCapacity</label>
-            <input type="text" placeholder="CargoCapacity" name="CargoCapacity" id="CargoCapacity" required>
-            <br><br>
-            <button type="submit">Add details for Truck</button>
-        </form>
-    </div>    
     <div class="msg">{{ msg }}</div>
+    <div class="msg">{{ msg2 }}</div>
+{% endblock %}
 
-</body>
-
+{% block scripts %}
 <script>
-    function myFunction() {
-        var t = document.getElementById("vehicleType").selectedOptions[0].value;
-        if(t === 'Car'){
-            var cs = document.getElementsByClassName("car");
-            for (let i = 0; i < cs.length; ++i) {
-                let c = cs[i];  
-                c.style.display="block";}
-            var ss = document.getElementsByClassName("suv");
-            for (let i = 0; i < ss.length; ++i) {
-                let s = ss[i];  
-                s.style.display="none";}
-            var vs = document.getElementsByClassName("vanminivan");
-            for (let i = 0; i < vs.length; ++i) {
-                let v = vs[i];  
-                v.style.display="none";}
-            var cos = document.getElementsByClassName("convertible");
-            for (let i = 0; i < cos.length; ++i) {
-                let co = cos[i];  
-                co.style.display="none";}
-            var ts = document.getElementsByClassName("truck");
-            for (let i = 0; i < ts.length; ++i) {
-                let t = ts[i];  
-                t.style.display="none";}
-
-        }else if(t === 'SUV'){
-            var cs = document.getElementsByClassName("car");
-            for (let i = 0; i < cs.length; ++i) {
-                let c = cs[i];  
-                c.style.display="none";}
-            var ss = document.getElementsByClassName("suv");
-            for (let i = 0; i < ss.length; ++i) {
-                let s = ss[i];  
-                s.style.display="block";}
-            var vs = document.getElementsByClassName("vanminivan");
-            for (let i = 0; i < vs.length; ++i) {
-                let v = vs[i];  
-                v.style.display="none";}
-            var cos = document.getElementsByClassName("convertible");
-            for (let i = 0; i < cos.length; ++i) {
-                let co = cos[i];  
-                co.style.display="none";}
-            var ts = document.getElementsByClassName("truck");
-            for (let i = 0; i < ts.length; ++i) {
-                let t = ts[i];  
-                t.style.display="none";}
-
-        }else if(t === 'VanMiniVan'){
-            var cs = document.getElementsByClassName("car");
-            for (let i = 0; i < cs.length; ++i) {
-                let c = cs[i];  
-                c.style.display="none";}
-            var ss = document.getElementsByClassName("suv");
-            for (let i = 0; i < ss.length; ++i) {
-                let s = ss[i];  
-                s.style.display="none";}
-            var vs = document.getElementsByClassName("vanminivan");
-            for (let i = 0; i < vs.length; ++i) {
-                let v = vs[i];  
-                v.style.display="block";}
-            var cos = document.getElementsByClassName("convertible");
-            for (let i = 0; i < cos.length; ++i) {
-                let co = cos[i];  
-                co.style.display="none";}
-            var ts = document.getElementsByClassName("truck");
-            for (let i = 0; i < ts.length; ++i) {
-                let t = ts[i];  
-                t.style.display="none";}
-
-        }else if(t === 'Convertible'){
-            var cs = document.getElementsByClassName("car");
-            for (let i = 0; i < cs.length; ++i) {
-                let c = cs[i];  
-                c.style.display="none";}
-            var ss = document.getElementsByClassName("suv");
-            for (let i = 0; i < ss.length; ++i) {
-                let s = ss[i];  
-                s.style.display="none";}
-            var vs = document.getElementsByClassName("vanminivan");
-            for (let i = 0; i < vs.length; ++i) {
-                let v = vs[i];  
-                v.style.display="none";}
-            var cons = document.getElementsByClassName("convertible");
-            for (let i = 0; i < cons.length; ++i) {
-                let con = cons[i];  
-                con.style.display="block";}
-            var ts = document.getElementsByClassName("truck");
-            for (let i = 0; i < ts.length; ++i) {
-                let t = ts[i];  
-                t.style.display="none";}
-
-
-        }else if(t === 'Truck'){
-            var cs = document.getElementsByClassName("car");
-            for (let i = 0; i < cs.length; ++i) {
-                let c = cs[i];  
-                c.style.display="none";}
-            var ss = document.getElementsByClassName("suv");
-            for (let i = 0; i < ss.length; ++i) {
-                let s = ss[i];  
-                s.style.display="none";}
-            var vs = document.getElementsByClassName("vanminivan");
-            for (let i = 0; i < vs.length; ++i) {
-                let v = vs[i];  
-                v.style.display="none";}
-            var cons = document.getElementsByClassName("convertible");
-            for (let i = 0; i < cons.length; ++i) {
-                let con = cons[i];  
-                con.style.display="none";}
-            var ts = document.getElementsByClassName("truck");
-            for (let i = 0; i < ts.length; ++i) {
-                let t = ts[i];  
-                t.style.display="block";}
-
+    function typeFunction(){
+        t = document.getElementById("Type").selectedOptions[0].value;
+        formList = document.getElementsByClassName("add_vehicle2");
+        for(let i=0; i<formList.length; i++){
+            f = formList[i];
+            f.style.display = "none";
         }
+        p = document.getElementById(t);
+        p.style.display = "block";
+        document.getElementById("add").style.display="block";
+    }
+
+    function submitFunction(){
+        if(!document.getElementById("Vin").value){
+            alert("Incomplete Information")
+            return false;
+        }else if(!document.getElementById("ModelName").value){
+            alert("Incomplete Information")
+            return false;            
+        }
+        else if(!document.getElementById("ModelYear").value){
+            alert("Incomplete Information")
+            return false;            
+        }else if(!document.getElementById("Manu").value){
+            alert("Incomplete Information")
+            return false;               
+        }else if(!document.getElementById("InvoicePrice").value){
+            alert("Incomplete Information")
+            return false;               
+        }else if(!document.getElementById("color").value){
+            alert("Incomplete Information")
+            return false;               
+        };
+        t = document.getElementById("Type").selectedOptions[0].value;
+        console.log(t)
+
+        if(t ==='Car'){
+            if(!document.getElementById("NumDoor").value){
+                alert("Incomplete Information")
+                return false;
+            }
+        }else if(t ==='Van MiniVan'){
+            if(!document.getElementById("Side").value){
+                alert("Incomplete Information")
+                return false; 
+            }
+        }else if(t === 'Convertible'){
+            if(!document.getElementById("Back").value){
+                alert("Incomplete Information")
+                return false; 
+            }else if(!document.getElementById("Roof").value){
+                alert("Incomplete Information")
+                return false;                 
+            }            
+        }else if(t === 'Truck'){
+            if(!document.getElementById("NumAX").value){
+                alert("Incomplete Information")
+                return false; 
+            }else if(!document.getElementById("Capacity").value){
+                alert("Incomplete Information")
+                return false;                 
+            }            
+        }else{
+            if(!document.getElementById("NumCup").value){
+                alert("Incomplete Information")
+                return false; 
+            }else if(!document.getElementById("Drive").value){
+                alert("Incomplete Information")
+                return false;  
+            }
+        };
+        
+        return document.getElementById("form1").submit();
+
+        
     };
+
 </script>
-</html>
+{% endblock %}

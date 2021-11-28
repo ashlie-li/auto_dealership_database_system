@@ -1,0 +1,1 @@
+INSERT INTO Trucks (Vin, CargoCoverType, NumberOfRearAxies, CargoCapacity) VALUES (%s, %s, %s, %s);

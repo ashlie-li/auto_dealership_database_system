@@ -1,16 +1,9 @@
+{% extends "layout.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Average Time In Inventory Report</title>
-</head>
-<body>
+{% block title %}Average Time In Inventory Report{% endblock %}
+
+{% block content %}
     <h1>Average Time In Inventory Report</h1>
-
-
     <div class="container">
         <table class ="average time" name='res' border="1" >
             {% for row in col %}
@@ -26,10 +19,4 @@
             {% endfor %}
         </table>
     </div>
-
-
-
-    
-
-</body>
-</html>
+{% endblock %}

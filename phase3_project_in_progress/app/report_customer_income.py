@@ -5,56 +5,65 @@ import os
 
 
 @app.route('/report_customer_income', methods = ['GET', 'POST'])
-def report_customer_income():
-    # if 'role' not in session or session['role'] not in ['Owner', 'Manager']:
-    #     return render_template( 'error_handle.html', msg='You are not authorized to view this report', to_url = '/login')
-    # role = session['role']
-    role = "manager"
-
+def report_customer_income(): 
+    if 'role' not in session or session['role'] not in ['Owner', 'Manager']:
+        return render_template( 'error_handle.html', msg='You are not authorized to view this report', to_url = '/login')
+    role = session['role']
+    
     with open(os.path.join(os.getcwd(), "sql_files", "report_customer_income.sql"),
               "r", encoding='utf-8') as file:
         tmp = file.readlines()
     query = " ".join(tmp)
-    print(query)
+    
+    tmp = runSQL.readSQL(query)
+    
+    res = []
+    
+    for row in tmp:
+        a = row[0]
+        b = row[1:] 
+        res.append([a, b])
+    
+    
+
+    col = ('Name', 'First Date', 'Last Date', 'Number of Sales', 'Number of Repairs','Total Income')
 
 
-
-    res= runSQL.readSQL(query)
-
-    res_list = []
-    for row in res:
-        r = list(row)
-        res_list.append(r)
-
-    col = ('Name', 'First Date', 'last Date', 'Number of Sales', 'Number of Repairs','Total Income')
+    return render_template('report_customer_income.html', col = col, res = res, role=role)
 
 
-    return render_template('report_customer_income.html', col = col, res = res_list, role=role)
-
-@app.route('/report_customer_income/sales/<string:id>', methods = ['GET', 'POST'])
-def sales_detail(id):
-    # if 'role' not in session or session['role'] not in ['Owner', 'Manager']:
-    #     return render_template( 'error_handle.html', msg='You are not authorized to view this report', to_url = '/login')
-    # role = session['role']
-    role = 'manager'
-
-    with open(os.path.join(os.getcwd(), 'sql_files', 'report_customer_income_sales_detail.sql'), "r", encoding='utf-8') as file:
-        tmp = file.readlines()
-    query = " ".join(tmp)
-    res= runSQL.readSQL(query, [id])
-    col = ('Sale Date', 'Sale Price', 'Vin', 'Year', 'Manufacturer', 'Model', 'Salesperson Name')
-    return render_template('report_customer_income_sales_detail.html', col = col, res = res, role=role)
-
-@app.route('/report_customer_income/repair/<string:id>', methods = ['GET', 'POST'])
-def repair_detail(id):
+@app.route('/report_customer_income/<string:CustomerID>/<string:Name>', methods = ['GET', 'POST'])
+def customer_income_detail(CustomerID, Name):
     if 'role' not in session or session['role'] not in ['Owner', 'Manager']:
         return render_template( 'error_handle.html', msg='You are not authorized to view this report', to_url = '/login')
     role = session['role']
-    # role = 'manager'
 
-    with open(os.path.join(os.getcwd(), 'sql_files', 'report_customer_income_repair_detail.sql'), "r", encoding='utf-8') as file:
+    with open(os.path.join(os.getcwd(), "sql_files", "report_customer_income_sale.sql"),
+              "r", encoding='utf-8') as file:
         tmp = file.readlines()
-    query = " ".join(tmp)
-    res= runSQL.readSQL(query, [id])
-    col = ('Start Date', 'End Price', 'Odometer', 'Labor Charge', 'Part Cost', 'Total Charge', 'Service Write Name')
-    return render_template('report_customer_income_repair_detail.html', col = col, res = res, role=role)
+    query_sale = " ".join(tmp)
+    
+    res_sale = runSQL.readSQL(query_sale, [CustomerID])
+    if len(res_sale) == 0:
+        show_sale = 'no'
+    else:
+        show_sale = 'yes'
+        
+    col_sale = ('Sale Date', 'Sale Price', 'Vin', 'Model Year', 'Manufacturer', 'Model', 'Salesperson')
+
+    with open(os.path.join(os.getcwd(), "sql_files", "report_customer_income_repair.sql"),
+              "r", encoding='utf-8') as file:
+        tmp = file.readlines()
+    query_repair= " ".join(tmp)
+    
+    res_repair = runSQL.readSQL(query_repair, [CustomerID])
+    col_repair = ('Start Date', 'End Date', 'Odometer', 'Labor Charge', 'Part Cost', 'Total Cost', 'Service Writer')
+    
+    if len(res_repair) == 0:
+        show_repair = 'no'
+    else:
+        show_repair = 'yes'    
+    
+    return render_template('report_customer_income_detail.html', res_sale = res_sale, col_sale = col_sale, \
+                           res_repair=res_repair, col_repair=col_repair,show_sale=show_sale, show_repair=show_repair,\
+                           role=role, CustomerID=CustomerID, Name=Name)

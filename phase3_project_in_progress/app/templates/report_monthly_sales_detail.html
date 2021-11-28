@@ -3,7 +3,8 @@
 {% block title %}Monthly Sales Report{% endblock %}
 
 {% block content %}
-    <h1>Repair Customer Income Report</h1>
+    <h1>Monthly Sales Report</h1>
+    <h3>Report for {{ym}}</h3>
     <div class="container">
         <table name='res' border="1" >
             {% for row in col %}
@@ -15,9 +16,9 @@
                         <td>{{ d }}</td>
                     {% endfor %}
                 </tr>
-
+                
             {% endfor %}
         </table>
     </div>
-    <a href ="/report_customer_income">Back to Main Report</a>
+    <a href ="/report_monthly_sales">Back to Main Report</a>
 {% endblock %}

@@ -1,0 +1,1 @@
+INSERT INTO SUVs (Vin, DrivetrainType, NumberOfCupHolders) VALUES (%s, %s, %s);

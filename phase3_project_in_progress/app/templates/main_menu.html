@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}Main Menu{% endblock %}
+
+{% block content %}
+    <h1>Main Menu</h1>
+    <h2 class="repair">Service Writer Section</h2>
+    <form action="/add_repair/search_vehicle2" target="_blank" class="repair">
+        <input type="submit" value="Repair Vehicle" />
+    </form>
+    <br>
+    <h2 class="inventory">Inventory Clerk Section</h2>
+    <form action="/add_vehicle" target="_blank" class="inventory">
+        <input type="submit" value="Add New Vehicle" />
+    </form>
+    <br>
+    <h2 class="manager">Manager Section</h2>
+    <form class="manager" id="sale_by_color" action="/report_sales_by_color" target="_blank" style="display: inline;">
+        <input type="submit" value="Sales by Color Report"/>
+    </form>
+    <form class="manager" id="sale_by_type" action="/report_sales_by_type" target="_blank" style="display: inline;">
+        <input type="submit" value="Sales by Type Report"/>
+    </form>
+    <form class="manager" id="sale_by_manu" action="/report_sales_by_manufacturer" target="_blank"style="display: inline;" >
+        <input type="submit" value="Sales by Manufacturer Report"/>
+    </form><br><br>
+    <form class="manager" id="customer_income" action="/report_customer_income" target="_blank" style="display: inline;">
+        <input type="submit" value="Customer Income Report"/>
+    </form>
+    <form class="manager" id="customer_income" action="/report_below_cost_sales" target="_blank" style="display: inline;">
+        <input type="submit" value="Below Cost Sales Report"/>
+    </form>
+    <form class="manager" id="report_repair_by_manu" action="/report_repair_by_manu" target="_blank" style="display: inline;">
+        <input type="submit" value="Repairs by Manufacturer/Type/Model Report"/>
+    </form><br><br>
+    <form class="manager" id="average_time" action="/report_average_time" target="_blank" style="display: inline;">
+        <input type="submit" value="Average Time in Inventory Report"/>
+    </form>
+    <form class="manager" id="part_stats" action="/report_part_stats" target="_blank" style="display: inline;">
+        <input type="submit" value="Part Statistics Report"/>
+    </form>
+    <form class="manager" id="monthly_sales" action="/report_monthly_sales" target="_blank" style="display: inline;">
+        <input type="submit" value="Monthly Sales Report"/>
+    </form>  
+{% endblock %} 
+
+{% block scripts %}
+<script>    
+    var role = "{{ role }}"
+    console.log(role)
+    var rs = document.getElementsByClassName("repair");
+    if(["Owner", "Service Writer"].includes(role) === false ){    
+        for (let i = 0; i < rs.length; ++i) {
+            let r = rs[i];  
+            r.style.display="none";
+        }
+    };
+    var ns = document.getElementsByClassName("inventory");
+    if(["Owner", "Inventory Clerk"].includes(role) === false ){    
+        for (let i = 0; i < ns.length; ++i) {
+            let n = ns[i];  
+            n.style.display="none";
+        }
+    };
+    var ms = document.getElementsByClassName("manager");
+    if(["Owner", "Manager"].includes(role) === false ){    
+        for (let i = 0; i < ms.length; ++i) {
+            let m = ms[i];  
+            m.style.display="none";
+        }
+    };
+</script>
+{% endblock %}

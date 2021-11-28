@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block title %}Repair Vehicle{% endblock %}
+
+
+{% block content %}
+    <h1>Repair Vehicle {{Vin}}</h1>
+    <p>Customer {{CustomerID}} is selected.</p>
+    <div class="msg">{{ msg }}</div>
+
+    <div class="container" id='open repair' >
+        <table class ="open repair" name='res1' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res1 %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <br>
+
+    <button id='update key'  onclick="myFunction()">Update This Repair</button>
+
+    <br>
+    <p class="msg" id='msg2'>{{ msg2 }}</p>
+    <div id="update input" style="display: none;">
+        <h3>General Information</h3>
+        <form method="POST" action="/add_repair2/{{Vin}}/update_repair/{{CustomerID}}" >
+            <input type = "hidden" name = "UpdateVin" value = "{{Vin}}" />
+            {% if res1 is defined %}
+                <input type = "hidden" name = "StartDate" value = "{{res1[0][1]}}" />
+                <input type = "hidden" name = "OldLabor" value = "{{res1[0][3]}}" />
+                <label for="labor">Labor Charge</label>
+                <input type="number" min="0" value="{{ res1[0][3] }}" name="labor" id="labor" required>
+            {% endif %}
+            <button type="submit">Update Information</button>            
+        </form><br>
+        <form method="POST" action="/add_repair2/{{Vin}}/update_repair/{{CustomerID}}" >
+            <input type = "hidden" name = "UpdateVin" value = "{{Vin}}" />
+            {% if res1 is defined %}
+                <input type = "hidden" name = "StartDate" value = "{{res1[0][1]}}" />
+                <label for="description">Description</label>
+                <input type="text" placeholder="enter description" name="description" id="description" style="width:500px;" required>
+            {% endif %}
+            <button type="submit">Update Information</button>            
+        </form>
+
+        <h3>Add New Parts</h3>
+        <form method="POST" action="/add_repair2/{{Vin}}/update_repair/{{CustomerID}}" >
+            <input type = "hidden" name = "UpdateVin" value = "{{Vin}}" />
+            {% if res1 is defined %}
+                <input type = "hidden" name = "StartDate" value = "{{res1[0][1]}}" />
+            {% endif %}
+            <label for="vendor">Part Vendor</label>
+            <input type="text" placeholder="enter vendor" name="vendor" id="vendor" required>
+            <label for="number">Part Number</label>
+            <input type="text" placeholder="enter part number" name="number" id="number" required><br>
+            <label for="price">Part Price</label>
+            <input type="text" placeholder="enter the unit price" name="price" id="price" required>
+            <label for="quantity">Part Quantity</label>
+            <input type="number" min="0" placeholder="enter the quantity" name="quantity" id="quantity" required>
+            <button type="submit">Update Information</button> 
+        </form>
+        <br>
+        <h3>Update Parts</h3>
+        <form method="POST" action="/add_repair2/{{Vin}}/update_repair/{{CustomerID}}" >
+            <input type = "hidden" name = "UpdateVin" value = "{{Vin}}" />
+            {% if res1 is defined %}
+                <input type = "hidden" name = "StartDate" value = "{{res1[0][1]}}" />
+            {% endif %}
+            <label for="number2">Part Number</label>
+            <input type="text" placeholder="enter part number" name="number2" id="number2" required>
+            <label for="quantity2">New Quantity</label>
+            <input type="number" min="0" placeholder="enter the quantity" name="quantity2" id="quantity2" required>
+            <button type="submit">Update Information</button>
+        </form><br>
+        <a href ="/add_repair/search_vehicle2">Save for Later</a>
+        <br>
+        <br>
+        <form method="POST" action="/add_repair2/{{Vin}}/update_repair/{{CustomerID}}" >
+            <input type = "hidden" name = "UpdateVin" value = "{{Vin}}" />
+            {% if res1 is defined %}
+                <input type = "hidden" name = "StartDate" value = "{{res1[0][1]}}" />
+            {% endif %}
+                <input type = "hidden" name = "close" value = "" />
+            <button type="submit">Close This Repair</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var s = '{{ show }}';
+    console.log(s)
+    if(s === 'yes'){
+        document.getElementById("update input").style.display="block"
+    }
+
+    function myFunction(){
+        var bs = document.getElementById("update input");
+        var m = document.getElementById("msg2");
+        if(bs.style.display==="none"){
+            bs.style.display="block"; 
+        }else{
+            bs.style.display="none";
+        }
+        m.innerHTML = ""
+
+    }
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,1 @@
+INSERT INTO Cars (Vin, NumOfDoors) VALUES (%s, %s);

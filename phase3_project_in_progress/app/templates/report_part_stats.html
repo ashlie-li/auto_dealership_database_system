@@ -1,17 +1,9 @@
+{% extends "layout.html" %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Part Statistics Report</title>
-</head>
-<body>
+{% block title %}Part Statistics Report{% endblock %}
+
+{% block content %}
     <h1>Part Statistics Report</h1>
-
-
-
     <div class="container">
         <table class ="part stats" name='res' border="1" >
             {% for row in col %}
@@ -22,16 +14,9 @@
                     {% for d in row %}
                         <td>{{ d }}</td>
                     {% endfor %}
-                    <td><button type="button">Click Me!</button></td>
                 </tr>
                 
             {% endfor %}
         </table>
     </div>
-
-
-
-    
-
-</body>
-</html>
+{% endblock %}
