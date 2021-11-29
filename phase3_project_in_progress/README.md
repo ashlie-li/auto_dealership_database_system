@@ -36,14 +36,14 @@ Note: (This only need to run once or rerun if you drop your database)
 mysql -u root -p
 
 # create database in sql console
-CREATE DATABASE CS6400_try1;
+CREATE DATABASE cs6400_demodata;
 exit;
 
 # duplicate .env.sample to .env to override necessary database user password or user name
 
 # load schema.sql and seed data
-mysql -u root -p cs6400_try1 < schema_data_sql/revised_schema.sql
-mysql -u root -p cs6400_try1 < schema_data_sql/data.sql
+mysql -u root -p cs6400_demodata < schema_data_sql/revised_schema.sql
+mysql -u root -p cs6400_demodata < schema_data_sql/data.sql
 ```
 
 6. Run flask app
