@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}Monthly Sales Report{% endblock %}
+
+{% block content %}
+    <h1>Monthly Sales Report</h1>
+    <h3>Report for {{ym}}</h3>
+    <div class="container">
+        <table name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr >
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+                
+            {% endfor %}
+        </table>
+    </div>
+    <a href ="/report_monthly_sales">Back to Main Report</a>
+{% endblock %}

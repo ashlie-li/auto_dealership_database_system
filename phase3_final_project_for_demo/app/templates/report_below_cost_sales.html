@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}Below Cost Sales Repor{% endblock %}
+
+{% block content %}
+    <h1>Below Cost Sales Report</h1>
+
+
+    <div class="container">
+        <table class ="below cost" id ="below_cost" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+                
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<SCript>
+    var rows = document.getElementById("below_cost").rows;
+    for (let i = 1; i < rows.length; i++) {
+        var row = rows[i]
+        var cell = rows[i].cells[3];
+        console.log(cell)
+        if(cell.innerHTML < 0.95){
+            row.style.backgroundColor = "Tomato"
+        }
+    }
+</SCript>
+{% endblock %}

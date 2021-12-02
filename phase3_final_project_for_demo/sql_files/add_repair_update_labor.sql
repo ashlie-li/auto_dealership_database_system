@@ -1,0 +1,1 @@
+UPDATE RepairEvents SET LaborCharge =  %s WHERE Vin = %s AND StartDate = %s;

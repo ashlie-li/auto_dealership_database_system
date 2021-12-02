@@ -1,0 +1,110 @@
+Queries are saved in the /phase3_project_in_progress/sql_files folder.
+
+As there are more than 10 query files, we save all the queries into the /phase3_project_in_progress/all_SQL.docx. 
+
+In the /phase3_project_in_progress/sql_files folder:
+
+	add_customer.sql: query to add tuple in the Customers table.
+
+	add_customer_business.sql: add tuple in the Business table
+
+	add_customer_person.sql: add tuple in the Persons table
+
+	add_repair_check_repair.sql: query to view the open repair event for the vehicle
+
+	add_repair_new_repair.sql: add new repair to the RepairEvents table
+ 
+	add_repair_search_vehicle.sql: used in the repair form, search vehicle by VIN
+
+	add_repair_update_add_parts.sql: add part in the Parts table to the open repair
+
+	add_repair_update_close.sql: close the open repair
+
+	add_repair_update_description.sql: update the description for the repair
+
+	add_repair_update_labor.sql: update the labor charge for the repair
+
+	add_repair_update_parts.sql: update the part information in the Parts table
+
+	add_sales.sql: add tuple in the SalesEvent table
+
+	add_vehicle.sql: add tuple in the Vehicles table
+
+	add_vehicle_car.sql: add tuple in the Cars table
+
+	add_vehicle_conv.sql: add tuple in the Convertible table
+
+	add_vehicle_suv.sql: add tuple in the SUVs table
+
+	add_vehicle_truck.sql: add tuple in the Trucks table
+
+	add_vehicle_van.sql: add tuple in the VanMiniVans table
+
+	add_vehiclecolor.sql: add tuple in the VehicleColors table
+
+	login.sql: find the username and password for login
+
+	report_average_time.sql: view the average time report
+
+	report_below_cost_sales.sql: view the below cost sales report
+
+	report_customer_income.sql: view the gross customer income report
+
+	report_customer_income_repair.sql: view the repair section in the detail page of customer report
+
+	report_customer_income_sale.sql: view the sale section in the detail page of customer report
+
+	report_monthly_sales.sql: view the monthly sales report
+
+	report_monthly_sales_detail.sql: view the monthly sales report detail page
+
+	report_part_stats.sql: view the part statistics report
+
+	report_repair_by_manu.sql: view the repairs by manufacturer report
+
+	report_repair_by_manu_detail.sql: view the repairs by type/model for specific manufacturer in the detail page
+
+	report_sales_by_color.sql: view the sales by color report
+
+	report_sales_by_manufacturer.sql: view the sales by manufacturer report
+
+	report_sales_by_type.sql: view the sales by type report
+
+	search.sql: search vehicles
+
+	search_customer.sql: search existing customers
+
+	vehicle_detail.sql: view the vehicle details
+
+	vehicle_detail_repair_section.sql: used in the vehicle detail page, view the repair section
+
+	vehicle_detail_sale_section.sql: used in the vehicle detail page, view the sale section
+
+In the /phase3_project_in_progress/schema_data_sql folder, the revised_schema.sql file contains the schema of the project. 
+Users should load this schema file to DBMS first to create database, table, and constraints. 
+The data.sql file contains the demo data.
+
+The run.py file in the /phase3_project_in_progress folder is the file to run the flask server on command line. The runSQL.py file contains two functions: read queries and write queries to perform interactions between the flask and the database.
+
+The python documents in the /phase3_project_in_progress/app/ folder are the backend flask applications. Therein, the __init__.py file contains the information connecting to the MySQL database: database name, database port number, user name, and user password. And this file assign the flask server and import all the applications.
+
+	add_repair2.py: used in the view/add/update repair task
+
+	add_sales.py: used in the add sales task
+	
+	add_vehicle.py: used in the add vehicle task
+	
+	login.py. logout.py: used in the login/logout task
+
+	main_menu.py: used in the main menu task
+
+	.py files begins with "report": used in each report task
+
+	search.py: used in search vehicle task
+
+	search_add_customer.py: used in the search/add customer task
+
+	vehicle_detail.py: used in vehicle detail page task	
+
+The html files in the /phase3_project_in_progress/app/templates/ folder are the frontend documents for the user interface.
+

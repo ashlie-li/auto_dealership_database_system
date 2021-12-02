@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <div class="login">
+        <h1>Login</h1>
+        <form action="{{ url_for('login') }}" method="post">
+            <input type="text" name="username" placeholder="Username" id="username" required>
+
+            <input type="password" name="password" placeholder="Password" id="password" required>
+            <input type="submit" value="Login">
+            <p class="msg" style="display: none;" id="msg">{{ msg }}</p>
+            
+        </form>
+    </div>
+    <br>
+    <br>
+    <a href="/search">Back to Search Vechicle</a>
+
+{% endblock %} 
+
+{% block scripts %}
+<script>
+    var msg = document.getElementById("msg");
+    if(msg.innerHTML !==""){
+        alert(msg.innerHTML)
+    }
+</script>
+{% endblock %}
+

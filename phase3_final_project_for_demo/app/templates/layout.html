@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    <nav class="top_barr_nav">
+        <div>
+            <a href="/login" style="display: inline;" id="login">Login</a>
+            <p style="display: none;" id="login message">[{{role}}] has logged in.</p>
+            <a href="/main_menu" style="display: none;" id="main menu">Main Menu</a>
+            <a href="/search" style="display: none;" id="search vehicle">Search Vehicle</a>
+            <a href="/logout" style="display: none;" id="logout">Logout</a>
+            <br><br>
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+
+</body>
+
+{% block scripts %}{% endblock %}
+
+
+<script>
+        var role = "{{ role }}"
+    if(role !== ""){
+        console.log(role)
+        document.getElementById("login").style.display = "none"
+        document.getElementById("logout").style.display = "inline"
+        document.getElementById("login message").style.display = "inline"
+        document.getElementById("main menu").style.display = "inline"
+        document.getElementById("search vehicle").style.display = "inline"
+    }
+</script>
+</html>

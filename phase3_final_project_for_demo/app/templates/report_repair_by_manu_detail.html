@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+
+{% block title %}Repair by Manufacturer Type Model Report{% endblock %}
+
+{% block content %}
+    <h1>Repair by Manufacturer Type Model Report</h1>
+    <h3>Report for {{manu}}</h3>
+    <div class="container">
+        <table name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr >
+                    {% for d in row %}
+                        <td class='cell_value'>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+    <a href ="/report_repair_by_manu">Back to Main Report</a>
+{% endblock %}
+
+
+
+{% block scripts %}
+<script>
+    function myFunction(d, n){
+        if(n==="None"){
+            return false
+        }
+        window.location.href = "/report_repair_by_manu/" + d;
+    }
+
+    cell_list = document.getElementsByClassName("cell_value")
+    for(let i=0;i<cell_list.length;i++){
+        let cv = cell_list[i]
+        if(cv.innerHTML==='None'){
+            cv.style.color = 'white';
+        }
+        
+    }
+
+</script>
+{% endblock %}

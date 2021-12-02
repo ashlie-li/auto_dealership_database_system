@@ -1,0 +1,1 @@
+INSERT INTO Convertibles (Vin, RoofType, BackSeatCount) VALUES (%s, %s, %s);

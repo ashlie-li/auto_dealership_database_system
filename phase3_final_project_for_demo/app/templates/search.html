@@ -1,0 +1,133 @@
+{% extends "layout.html" %}
+
+{% block title %}Search Vehicle{% endblock %}
+
+{% block content %}
+    <h1>Search Vehicle</h1>
+    <p>There are <b style="font-size: larger;">{{num_unsold}}</b> vehicles in inventory for sale.</p>
+    <br>
+    <form class="search_form" method="POST" action="">
+        <label for="manu">Select Manufacturer</label>
+        <select name="manu" id="manu">
+            <option value="">All</option>
+            {% for var in drop_manu %}
+                <option value="{{ var }}">{{ var }}</option>
+            {% endfor %}
+        </select>
+        <p></p>
+        <label for="Vtype">Select Vehicle Type</label>
+        <select name="Vtype" id="Vtype">
+            <option value="">All</option>
+            {% for var in drop_type %}
+                <option value="{{ var }}">{{ var }}</option>
+            {% endfor %}
+        </select>
+        <p></p>
+        <label for="year">Model Year</label>
+        <select name="year" id="year">
+            <option value="">All</option>
+            {% for var in drop_year %}
+                <option value="{{ var }}">{{ var }}</option>
+            {% endfor %}
+        </select>
+        <p></p>
+        <label for="color">Select Color</label>
+        <select name="color" id="color">
+            <option value="">All</option>
+            {% for var in drop_color %}
+                <option value="{{ var }}">{{ var }}</option>
+            {% endfor %}
+        </select>
+        <p></p>
+        <label for="minprice">Enter Min Price</label>
+        <input type="number" min="0" step='0.01' name="minprice" id="minprice">
+        <label for="maxprice">Enter Max Price</label>
+        <input type="number" min="0" step='0.01' name="maxprice" id="maxprice">
+        <p></p>
+        <label for="keyword">Keyword</label>
+        <input type="text" name="keyword" id="keyword">
+
+        <div id='staff'>
+            <h2>Staff Option</h2>
+            <label for="Vin_input">Search By Vin</label>
+            <input type="text" placeholder="Enter Vin" name="Vin_input" id="Vin_input">
+        </div>
+        <p></p>
+        <div id='manager' style="display: none;">
+        <h2>Manager Option</h2>
+            <label for="sold">Sold or Unsold</label>
+            <select name="sold" id="sold">
+                <option value="">All</option>
+                <option value="sold">Sold</option>
+                <option value="unsold">Unsold</option>
+            </select>
+        </div>
+        <p></p>
+
+        <button type="submit">SEARCH</button>
+    </form>
+    <p></p>
+    <div class="msg">{{ msg }}</div>
+
+    <div class="container" id="result"  style="display: none;">
+        <table class ="search_results" name='res' border="1" >
+            {% for row in col %}
+                <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr>
+                    {% for d in row[:-1] %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                    <td style="text-align: center;" class='marks'>{{row[-1]}}</td>
+                    <td>
+                        <form action="/vehicle_detail/{{row[0]}}" target="_blank">
+                            <button type="submit">Detail Page</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}    
+
+
+{% block scripts %}
+<script>
+    var role = '{{ role }}'
+    if(role === ''){
+        document.getElementById('staff').style.display='none'
+    };
+    if(role === 'Manager' || role ==='Owner'){
+        document.getElementById('manager').style.display='block'
+    };
+
+
+    var bs =  document.getElementById("result");
+    var m = '{{ msg }}'
+    if(m === "Search results:"){    
+        bs.style.display="block";}
+    else{
+        bs.style.display="none";
+    }
+
+    var marks = document.getElementsByClassName("marks")
+    for(let i=0;i<marks.length;i++){
+        mark = marks[i]
+        if(mark.innerText==="X"){
+            console.log(mark.innerText)
+            mark.innerHTML = "&#10006"
+        }
+    }
+
+    var alert0 = "{{alert0}}"
+    if(alert0 !== ""){
+        alert(alert0)
+    }
+
+</script>
+{% endblock %}
+
+
+
+

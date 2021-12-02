@@ -1,0 +1,1 @@
+INSERT INTO VanMiniVans (Vin, HasDriverSideBackDoor) VALUES (%s, %s);

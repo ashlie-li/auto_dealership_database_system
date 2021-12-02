@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}Repair by Manufacturer Type Model Report{% endblock %}
+
+{% block content %}
+    <h1>Repair by Manufacturer Type Model Report</h1>
+
+
+    <div class="container">
+        <table class ="part stats" id ="part stats" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr >
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                    <td><button id="{{row[0]}}" name="{{row[1]}}" onclick="myFunction(this.id, this.name)">More Detail</button></td>
+                </tr>
+
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function myFunction(d, n){
+        if(n==="None"){
+            return false
+        }
+        window.location.href = "/report_repair_by_manu/" + d;
+    }
+</script>
+{% endblock %}
+

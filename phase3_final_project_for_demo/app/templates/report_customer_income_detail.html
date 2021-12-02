@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}Gross Customer Income Report{% endblock %}
+
+{% block content %}
+    <h1>Gross Customer Income Report</h1>
+    <h3>Report for {{Name}}</h3>
+    
+    <h2>Sale Section</h2>
+    <div class="container" id = 'sale'>
+        <table class ="color sale" name='res' border="1" >
+            {% for row in col_sale %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res_sale %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+                
+            {% endfor %}
+        </table>
+    </div>
+    <p id='not_sale' style="display: none;">This customer has no sales record.</p>
+    
+    <h2>Repair Section</h2>
+    <div class="container" id ='repair'>
+        <table class ="color sale" name='res' border="1" >
+            {% for row in col_repair %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res_repair %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+                
+            {% endfor %}
+        </table>
+    </div>
+    <p id='not_repair' style="display: none;">This customer has no repair record.</p>
+    <br><br>
+
+    <a href ="/report_customer_income">Back to Main Report</a>
+{% endblock %} 
+
+{% block scripts %}
+<script>
+    var show_sale = '{{ show_sale }}';
+    var show_repair = '{{ show_repair }}';
+    if(show_sale === 'no'){
+        document.getElementById("sale").style.display='none'
+        document.getElementById("not_sale").style.display='inline'
+    };
+    if(show_repair === 'no'){
+        document.getElementById("repair").style.display='none'
+        document.getElementById("not_repair").style.display='inline'
+    };
+</script>
+{% endblock %}

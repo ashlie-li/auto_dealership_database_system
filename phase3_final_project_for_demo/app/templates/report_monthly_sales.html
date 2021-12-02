@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Monthly Sales Report{% endblock %}
+
+{% block content %}
+    <h1>Monthly Sales Report</h1>
+
+    
+    <div class="container">
+        <table class ="monthly_sale" id ="monthly_sale" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr >
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                    <td><button id={{row[0]}} type="submit" onclick="myFunction(this.id)">More Detail</button></td>
+                </tr>
+                
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    var rows = document.getElementById("monthly_sale").rows;
+    for (let i = 1; i < rows.length; i++) {
+        var row = rows[i]
+        var cell = rows[i].cells[4];
+        if(cell.innerHTML < 1.10){
+            row.style.backgroundColor = "yellow"
+        }else if(cell.innerHTML > 1.25){
+            row.style.backgroundColor = "lightgreen"
+        }
+    }
+
+    function myFunction(d){
+        window.location.href = "/report_monthly_sales/" + d;
+    }
+</script>
+{% endblock %}

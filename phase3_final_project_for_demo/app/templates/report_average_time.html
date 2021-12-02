@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Average Time In Inventory Report{% endblock %}
+
+{% block content %}
+    <h1>Average Time In Inventory Report</h1>
+    <div class="container">
+        <table class ="average time" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for row in res %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                </tr>
+                
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

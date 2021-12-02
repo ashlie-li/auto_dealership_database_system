@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}Gross Customer Income Report{% endblock %}
+
+{% block content %}
+    
+    <h1>Gross Customer Income Report</h1>
+
+
+
+    <div class="container">
+        <table class ="customer_income" name='res' border="1" >
+            {% for row in col %}
+                    <th>{{ row }}</th>
+            {% endfor %}
+            {% for cid, row in res %}
+                <tr>
+                    {% for d in row %}
+                        <td>{{ d }}</td>
+                    {% endfor %}
+                    <td><button id={{cid}} name="{{row[0]}}" type="submit" onclick="myFunction(this.id, this.name)">More Detail</button></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    function myFunction(d, n){
+        console.log(d, n)
+        window.location.href = "/report_customer_income/"+d+'/'+n;
+    }
+</script>
+{% endblock %}

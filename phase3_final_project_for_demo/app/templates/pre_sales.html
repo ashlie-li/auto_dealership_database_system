@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+
+{% block title %}Sell Vehicle{% endblock %}
+
+
+{% block content %}
+    <h1>Sell Vehicle {{Vin}}</h1>
+    <p>You need to select a customer first.</p>
+    <form action="/{{Act}}/search_add_customer/{{Vin}}" id="search btn">
+        <button type="submit">Go to search or add customer</button>
+    </form>
+{% endblock %}
