@@ -15,6 +15,11 @@ def add_sales(Vin):
         role = ''
     
     msg = ''
+    
+    query_get_date = 'SELECT CURDATE()'
+    cur_date = runSQL.readSQL(query_get_date)[0][0]
+    
+    
     if request.method == 'POST' and 'CustomerID' in request.form:
         CustomerID = request.form['CustomerID']
         
@@ -24,15 +29,18 @@ def add_sales(Vin):
         print(CustomerID, customerName)
         
         if 'SalePrice' not in request.form:
-            return render_template('sales.html', CustomerID=CustomerID, Vin=Vin, msg=msg, role=role, customerName=customerName)
+            return render_template('sales.html', CustomerID=CustomerID, Vin=Vin, msg=msg, role=role, customerName=customerName, cur_date=cur_date)
         
         else:
             SalePrice = request.form['SalePrice']
- 
+            SaleDate = request.form['SaleDate']
+            print(SaleDate)
+            
             query_check_price = '''SELECT 0.95 * %s > InvoicePrice FROM Vehicles WHERE Vin = %s;'''
             res0 = runSQL.readSQL(query_check_price, [SalePrice, Vin])[0][0]
             if int(res0) == 0 and session['role'] != 'Owner':
-                return render_template('sales.html', CustomerID=CustomerID, Vin=Vin, msg='', alert0 = 'Price too low!', role=role, customerName=customerName)
+                return render_template('sales.html', CustomerID=CustomerID, Vin=Vin, msg='', alert0 = 'Price too low!', \
+                                       cur_date=cur_date, role=role, customerName=customerName)
             
             with open(os.path.join(os.getcwd(), 'sql_files', 'add_sales.sql'),
               "r", encoding='utf-8') as file:
@@ -40,7 +48,7 @@ def add_sales(Vin):
             query = " ".join(tmp)
     
             
-            res = runSQL.writeSQL(query, [Vin, SalePrice, CustomerID, session['username']])
+            res = runSQL.writeSQL(query, [Vin, SaleDate,SalePrice, CustomerID, session['username']])
             
             return render_template('error_handle.html', msg="Sale has been filed.", to_url = "/vehicle_detail/"+Vin)
     

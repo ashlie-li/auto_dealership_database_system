@@ -29,10 +29,12 @@
     var rows = document.getElementById("monthly_sale").rows;
     for (let i = 1; i < rows.length; i++) {
         var row = rows[i]
-        var cell = rows[i].cells[4];
-        if(cell.innerHTML < 1.10){
+        var cell = rows[i].cells[4].innerHTML ;
+
+        var cell_val = parseFloat(cell.slice(0, -1))
+        if(cell_val < 110){
             row.style.backgroundColor = "yellow"
-        }else if(cell.innerHTML > 1.25){
+        }else if(cell_val > 125){
             row.style.backgroundColor = "lightgreen"
         }
     }

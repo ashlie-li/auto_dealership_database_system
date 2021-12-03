@@ -12,7 +12,7 @@ UNION SELECT Vin, 'Convertible' AS Type FROM Convertibles
 SELECT AllTypes.Type, IFNULL(A.AverageTime, 'N/A') AS AverageTimeInInventory
 FROM AllTypes
 LEFT OUTER JOIN
-(SELECT T.Type, AVG(DATEDIFF(S.SaleDate, DATE_ADD(DateAdded, INTERVAL 1 DAY)) ) AS AverageTime
+(SELECT T.Type, ROUND(AVG(DATEDIFF( DATE_ADD(S.SaleDate,INTERVAL 1 DAY), DateAdded) ),2) AS AverageTime
 FROM Vehicles 
 INNER JOIN SalesEvents AS S ON Vehicles.Vin = S.Vin
 INNER JOIN TypeInfo AS T ON T.Vin =Vehicles.Vin

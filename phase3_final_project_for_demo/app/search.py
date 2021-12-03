@@ -113,11 +113,11 @@ def search():
         
         if res:
             msg =  'Search results:'
-            col = ('Vin', 'Type', 'Model Year', 'Manufacturer', 'Model','Color(s)', 'List Price', 'Match')
+            col = ('VIN', 'Type', 'Model Year', 'Manufacturer', 'Model','Color(s)', 'List Price', 'Match')
             return render_template('search.html', msg = msg, res=res, col = col, drop_year = drop_year, drop_manu=drop_manu,\
                                    drop_type=drop_type, drop_color=drop_color, role=role, num_unsold=num_unsold)
         else:
-            msg = 'No result, search again.'
+            msg = 'Sorry, it looks like we don’t have that in stock! Please search again.'
             col = []
             return render_template('search.html', msg = msg, drop_year = drop_year, drop_manu=drop_manu, drop_type=drop_type,\
                                    drop_color=drop_color, role=role, num_unsold=num_unsold)

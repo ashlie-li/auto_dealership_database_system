@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}Below Cost Sales Repor{% endblock %}
+{% block title %}Below Cost Sales Report{% endblock %}
 
 {% block content %}
     <h1>Below Cost Sales Report</h1>
@@ -28,9 +28,9 @@
     var rows = document.getElementById("below_cost").rows;
     for (let i = 1; i < rows.length; i++) {
         var row = rows[i]
-        var cell = rows[i].cells[3];
-        console.log(cell)
-        if(cell.innerHTML < 0.95){
+        var cell = rows[i].cells[3].innerHTML;
+        var cell_val = parseFloat(cell.slice(0, -1))
+        if(cell_val < 95){
             row.style.backgroundColor = "Tomato"
         }
     }

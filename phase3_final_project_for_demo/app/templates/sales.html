@@ -11,6 +11,10 @@
         <input type = "hidden" name = "CustomerID" value = "{{CustomerID}}" />
         <label for="SalePrice">Please Enter the Sale Price</label>
         <input type="number" min="0" step="0.01" placeholder="sale price" name="SalePrice" id="SalePrice" required>
+        <br><br>
+        <label for="SaleDate">Please Confirm Sale Date</label>
+        <input type="date" value= "{{cur_date}}" name="SaleDate" id="SaleDate" required>
+        <br><br>
         <button type="submit">Submit</button>
     </form>
     <div class="msg">{{ msg }}</div>

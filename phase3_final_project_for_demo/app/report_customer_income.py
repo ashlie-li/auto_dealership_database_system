@@ -49,7 +49,7 @@ def customer_income_detail(CustomerID, Name):
     else:
         show_sale = 'yes'
         
-    col_sale = ('Sale Date', 'Sale Price', 'Vin', 'Model Year', 'Manufacturer', 'Model', 'Salesperson')
+    col_sale = ('Sale Date', 'Sale Price', 'VIN', 'Model Year', 'Manufacturer', 'Model', 'Salesperson')
 
     with open(os.path.join(os.getcwd(), "sql_files", "report_customer_income_repair.sql"),
               "r", encoding='utf-8') as file:
@@ -57,7 +57,7 @@ def customer_income_detail(CustomerID, Name):
     query_repair= " ".join(tmp)
     
     res_repair = runSQL.readSQL(query_repair, [CustomerID])
-    col_repair = ('Start Date', 'End Date', 'Odometer', 'Labor Charge', 'Part Cost', 'Total Cost', 'Service Writer')
+    col_repair = ('Start Date', 'End Date', 'VIN','Odometer', 'Labor Charge', 'Part Cost', 'Total Cost', 'Service Writer')
     
     if len(res_repair) == 0:
         show_repair = 'no'

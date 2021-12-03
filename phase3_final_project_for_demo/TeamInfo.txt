@@ -1,6 +1,6 @@
 Queries are saved in the /phase3_project_in_progress/sql_files folder.
 
-As there are more than 10 query files, we save all the queries into the /phase3_project_in_progress/all_SQL.docx. 
+As there are more than 10 query files, we save all the queries into the /phase3_project_in_progress/all_SQL.pdf. 
 
 In the /phase3_project_in_progress/sql_files folder:
 

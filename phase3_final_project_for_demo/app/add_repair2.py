@@ -6,6 +6,8 @@ import os
 
 @app.route('/add_repair/search_vehicle2', methods = ['GET', 'POST']) ###########
 def add_repair_search_vehicle2(): ##############
+    if 'role' not in session or session['role'] not in ['Owner', 'Service Writer']:
+        return render_template( 'error_handle.html', msg='You are not authorized to repair a vehicle', to_url = '/')
     if 'role' in session:
         role = session['role']
     else:
@@ -23,7 +25,7 @@ def add_repair_search_vehicle2(): ##############
         res0 = int(res0)
 
         if res0 == 0:
-            return render_template('pre_repair2.html', msg='The vehicle is not sold or not in inventory.', status= 'none', role=role) #*************
+            return render_template('pre_repair2.html', msg='', alert0='The vehicle is not sold or not in inventory.', status= 'none', role=role) #*************
 
         else:
             msg2 = 'Vechile is found:'
@@ -33,7 +35,7 @@ def add_repair_search_vehicle2(): ##############
             query1 = " ".join(tmp)
             
             res1 = runSQL.readSQL(query1, [Vin])
-            col1 = ('Vin', 'Type', 'Model Year', 'Manufacturr', 'Model', 'Color(s)')
+            col1 = ('VIN', 'Type', 'Model Year', 'Manufacturr', 'Model', 'Color(s)')
             
             
             query_check_open = '''SELECT %s IN (SELECT Vin FROM RepairEvents WHERE EndDate IS NULL);'''
@@ -81,6 +83,8 @@ def add_repair_search_vehicle2(): ##############
 
 @app.route('/add_repair2/<string:Vin>', methods = ['GET', 'POST'])   
 def add_repair2(Vin):
+    if 'role' not in session or session['role'] not in ['Owner', 'Service Writer']:
+        return render_template( 'error_handle.html', msg='You are not authorized to repair a vehicle', to_url = '/')
     if 'role' in session:
         role = session['role']
     else:
@@ -88,6 +92,12 @@ def add_repair2(Vin):
     msg = ''
     if request.method == 'POST' and 'CustomerID' in request.form:
         CustomerID = request.form['CustomerID']
+        
+        query_customer = '''SELECT Name FROM Business WHERE CustomerID = '{a}' UNION ALL SELECT CONCAT(FirstName, ' ', LastName) 
+                                AS NAME FROM Persons WHERE CustomerID = '{a}'; '''.format(a=CustomerID)
+        customerName = runSQL.readSQL(query_customer)[0][0]
+        print(CustomerID, customerName)        
+            
         if 'odometer' in request.form:
             msg = 'Please view this open repair:'
             odometer = request.form['odometer']
@@ -115,13 +125,15 @@ def add_repair2(Vin):
             query1 = " ".join(tmp)
             res1 = runSQL.readSQL(query1, [Vin])
             col = ('Vin', 'Start Date', 'Odometer', 'Labor Charge', 'Part Cost', 'Total Cost', 'Description')
-        return render_template('repair2.html', Vin=Vin, msg=msg, create='no', res1=res1, col=col, CustomerID=CustomerID, role=role)
+        return render_template('repair2.html', Vin=Vin, msg=msg, create='no', res1=res1, col=col, CustomerID=CustomerID, role=role, customerName=customerName)
     
     return redirect(url_for('add_repair_search_vehicle2'))
 
 
 @app.route('/add_repair2/<string:Vin>/update_repair/<string:CustomerID>', methods = ['GET', 'POST'])   
 def add_repair_update_repair2(Vin, CustomerID):
+    if 'role' not in session or session['role'] not in ['Owner', 'Service Writer']:
+        return render_template( 'error_handle.html', msg='You are not authorized to repair a vehicle', to_url = '/')
     if 'role' in session:
         role = session['role']
     else:
@@ -130,6 +142,7 @@ def add_repair_update_repair2(Vin, CustomerID):
     query_customer = '''SELECT Name FROM Business WHERE CustomerID = '{a}' UNION ALL SELECT CONCAT(FirstName, ' ', LastName) 
                             AS NAME FROM Persons WHERE CustomerID = '{a}'; '''.format(a=CustomerID)
     customerName = runSQL.readSQL(query_customer)[0][0]
+    print(CustomerID, customerName)
         
     with open(os.path.join(os.getcwd(), "sql_files", "add_repair_check_repair.sql"),
       "r", encoding='utf-8') as file:
@@ -149,32 +162,32 @@ def add_repair_update_repair2(Vin, CustomerID):
             if msg2 == 'query is executed':
                 res1 = runSQL.readSQL(query1, [Vin])
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2=msg2+', description is updated',\
-                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)
+                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)
             else:
                 res1 = runSQL.readSQL(query1, [Vin])
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2=" ", alert0 ="Discription too long!",\
-                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)
+                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)
         
         if request.method == 'POST' and  "labor" in request.form:
             try:
                 labor = float(request.form['labor'])
             except:
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2="Invalid Information",\
-                                       res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)                
+                                       res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)                
             OldLabor = float(request.form['OldLabor'])
             if labor <= OldLabor and session['role']!='Owner':
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2=" ", alert0 ="Can only enter higher labor charge.",\
-                                       res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)
+                                       res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)
             else:
                 query_update = '''UPDATE RepairEvents SET LaborCharge =  %s WHERE Vin = %s AND StartDate = %s;'''
                 msg2 = runSQL.writeSQL(query_update, [labor, Vin, StartDate])
                 if msg2 == 'query is executed':
                     res1 = runSQL.readSQL(query1, [Vin])
                     return render_template('repair2.html', Vin=Vin, msg=msg, msg2=msg2+', labor charge is updated',\
-                               res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)
+                               res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)
                 else:
                     return render_template('repair2.html', Vin=Vin, msg=msg, msg2='', alert0='Invalid Information',\
-                               res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)  
+                               res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)  
                     
         if request.method == 'POST' and  "vendor" in request.form:
             vendor = request.form['vendor']
@@ -188,10 +201,10 @@ def add_repair_update_repair2(Vin, CustomerID):
             if msg2 == 'query is executed':
                 res1 = runSQL.readSQL(query1, [Vin])
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2=msg2+', new parts are added',\
-                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)
+                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)
             else:
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2='', alert0='Invalid Information',\
-                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role) 
+                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName) 
         
         if request.method == 'POST' and  "number2" in request.form:
             number2 = request.form['number2']
@@ -203,10 +216,10 @@ def add_repair_update_repair2(Vin, CustomerID):
             if msg2 == 'query is executed':
                 res1 = runSQL.readSQL(query1, [Vin])
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2=msg2+', parts are updated',\
-                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)
+                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)
             else:
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2='', alert0='Invalid Information',\
-                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)    
+                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)    
         
         if request.method == 'POST' and  "close" in request.form:
             query_check_close = ''' SELECT ENDDATE IS NOT NULL FROM REPAIREVENTS WHERE 
@@ -222,7 +235,7 @@ def add_repair_update_repair2(Vin, CustomerID):
             print(msg2)
             if msg2 != 'query is executed':
                 return render_template('repair2.html', Vin=Vin, msg=msg, msg2=msg2,\
-                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role)
+                           res1=res1, col=col, CustomerID=CustomerID, show='yes', role=role, customerName=customerName)
             else:
                 return render_template('error_handle.html', msg="Repair is closed.", to_url = "/main_menu")
             

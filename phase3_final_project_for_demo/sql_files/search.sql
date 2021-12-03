@@ -32,16 +32,16 @@ AND
 THEN InvoicePrice * 1.25 >=  '{minp}' ELSE TRUE END)
 AND
 (CASE WHEN %s IS NOT NULL 
-THEN C.VColors = '{c}' OR C.VColors LIKE %s
+THEN C.VColors = '{c}' OR C.VColors LIKE BINARY %s
 ELSE TRUE END) 
 AND
 (CASE WHEN %s IS NOT NULL 
-THEN  Manufacturer LIKE %s OR ModelName LIKE %s
-OR ModelYear LIKE %s OR Description LIKE %s
+THEN  Manufacturer LIKE BINARY %s OR ModelName LIKE BINARY %s
+OR ModelYear LIKE BINARY %s OR Description LIKE BINARY %s
 ELSE TRUE END))
 SELECT Vin, Type, ModelYear,  Manufacturer, Model, Colors, 
 CAST(ListPrice as DECIMAL(10,2)), 
-(CASE WHEN %s IS NOT NULL AND Description LIKE %s
+(CASE WHEN %s IS NOT NULL AND Description LIKE BINARY %s
 THEN "X" ELSE " " END) AS MatchDescription
 FROM SearchResult WHERE TRUE AND
 (CASE WHEN %s IS NOT NULL THEN Vin = '{v}' ELSE TRUE END)

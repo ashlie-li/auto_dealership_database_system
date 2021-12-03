@@ -21,7 +21,7 @@ def vehicle_detail(Vin):
     
     
     
-    col = ('Vin', 'Type','Manufacturer', 'Model', 'Model Year', 'List Pice', 'Color(s)', 'Description')
+    col = ('VIN', 'Type','Manufacturer', 'Model', 'Model Year', 'List Pice', 'Color(s)', 'Description')
     
 
     

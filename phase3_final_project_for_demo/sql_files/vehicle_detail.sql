@@ -7,7 +7,8 @@ With TypeInfo AS (
         )
         SELECT V.Vin, Type, Manufacturer, ModelName AS Model, ModelYear, 
         CAST(1.25*InvoicePrice AS DECIMAL(10,2)) AS ListPrice, C.VColors AS Color, 
-        Description, InvoicePrice, DateAdded, CONCAT(FirstName, ' ', LastName) AS ClerkName 
+        IFNULL(Description, ''), InvoicePrice, DateAdded, 
+	CONCAT(FirstName, ' ', LastName) AS ClerkName 
         FROM  Vehicles AS V
         LEFT OUTER JOIN
         (SELECT Vin, GROUP_CONCAT(Colors SEPARATOR ' ') AS VColors

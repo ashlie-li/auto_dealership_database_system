@@ -1,4 +1,5 @@
-SELECT RepairEvents.StartDate, IFNULL(EndDate, '') AS EndDate1, Odometer, LaborCharge, IFNULL(PA.PartCost,0) AS PartCost, 
+SELECT RepairEvents.StartDate, IFNULL(EndDate, '') AS EndDate1, RepairEvents.Vin,
+Odometer, LaborCharge, IFNULL(PA.PartCost,0) AS PartCost, 
 (IFNULL(PA.PartCost,0) + LaborCharge) AS TotalCharge,
 CONCAT(PU.FirstName, ' ', PU.LastName) AS ServiceWriterName 
 FROM RepairEvents

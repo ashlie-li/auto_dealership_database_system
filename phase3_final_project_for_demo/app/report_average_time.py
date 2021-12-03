@@ -17,7 +17,7 @@ def average_time():
     
     res= runSQL.readSQL(query)
 
-    col = ('Vendor Name', 'Average Time In Inventory')
+    col = ('Type', 'Average Time In Inventory')
 
     
     return render_template('report_average_time.html', col = col, res = res, role=role)

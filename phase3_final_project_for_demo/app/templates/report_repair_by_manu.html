@@ -3,7 +3,7 @@
 {% block title %}Repair by Manufacturer Type Model Report{% endblock %}
 
 {% block content %}
-    <h1>Repair by Manufacturer Type Model Report</h1>
+    <h1>Repair by Manufacturer/Type/Model Report</h1>
 
 
     <div class="container">
@@ -27,7 +27,7 @@
 {% block scripts %}
 <script>
     function myFunction(d, n){
-        if(n==="None"){
+        if(n==="0"){
             return false
         }
         window.location.href = "/report_repair_by_manu/" + d;

@@ -22,36 +22,19 @@ LEFT JOIN
 FROM Parts GROUP BY Vin, StartDate)  AS PA
 ON RepairEvents.Vin = PA.Vin AND RepairEvents. StartDate = PA.StartDate
 LEFT JOIN VehiclesWithType  AS V ON RepairEvents.Vin = V.Vin
-),
-TypeCount AS(
+)
 SELECT Type, '' AS Model, Count(*) AS TotalRepairCount,
 SUM(LaborCharge) AS TotalLaborCost, SUM(PartCost) AS TotalPartCost,
-SUM(PartLaborCost) AS TotalPartLaborCost, Count(*) AS TypeRepairCount
+SUM(PartLaborCost) AS TotalPartLaborCost
 FROM RepairInfo
 WHERE Manufacturer = %s
-GROUP BY Type),
-ModelCount AS(
+GROUP BY Type
+UNION ALL
 SELECT Type, Model, Count(*) AS TotalRepairCount,
 SUM(LaborCharge) AS TotalLaborCost, SUM(PartCost) AS TotalPartCost,
 SUM(PartLaborCost) AS TotalPartLaborCost
 FROM RepairInfo
 WHERE Manufacturer = %s
 GROUP BY Type, Model
-),
-ModelTypeCount AS (
-SELECT M.Type, M.Model, M.TotalRepairCount, M.TotalLaborCost, M.TotalPartCost,
-M.TotalPartLaborCost, T.TypeRepairCount
-FROM ModelCount AS M
-LEFT JOIN TypeCount AS T ON T.Type = M.Type
-),
-SortTable AS (
-SELECT Type, Model, TotalRepairCount,TotalLaborCost,
-TotalPartCost, TotalPartLaborCost, TypeRepairCount FROM ModelTypeCount
-UNION ALL 
-SELECT Type, Model, TotalRepairCount,TotalLaborCost,
-TotalPartCost, TotalPartLaborCost, TypeRepairCount FROM TypeCount
-ORDER BY TypeRepairCount DESC, Type, Model !='', TotalRepairCount DESC
-)
-SELECT Type, Model, TotalRepairCount,TotalLaborCost,
-TotalPartCost, TotalPartLaborCost FROM SortTable;
+ORDER BY TotalRepairCount DESC;
 
